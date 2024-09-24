@@ -1,0 +1,65 @@
+<script type="text/ng-template" id="VendorCommissionCondition.html">
+    Vendor matching 
+    <a class="__link" left-click-menu data-target="allAny_menu{{element.id}}">{{element.all | boolToValue:'all':'any'}}</a> of the following criteria
+    <ul class="menu __context" role="menu" id="allAny_menu{{element.id}}">
+        <li class="menu-item" ng-click='element.all=true;'>all</li>
+        <li class="menu-item" ng-click='element.all=false;'>any</li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="BlockCommissionCondition.html">
+    If
+    <a class="__link" left-click-menu data-target="allAny_menu{{element.id}}">{{element.all | boolToValue:'all':'any'}}</a> of these conditions are true
+    <ul class="menu __context" role="menu" id="allAny_menu{{element.id}}">
+        <li class="menu-item" ng-click='element.all=true;'>all</li>
+        <li class="menu-item" ng-click='element.all=false;'>any</li>
+    </ul>
+</script>
+
+<script type="text/ng-template" id="ConditionCategoryIs.html">
+    <span class="list-item">Category is </span>
+    <a class="__link" ng-click="openCategorySelectWizard(element1)">
+        {{ element1.categoryId ? element1.categoryName || element1.categoryId: 'select category' }}
+    </a>
+</script>
+
+<script type="text/ng-template" id="ConditionCategoryIsNot.html">
+    <span class="list-item">excluding items from </span>
+    <a class="__link" ng-click="openCategorySelectWizard(element)">
+        {{ element.categoryId ? element.categoryName || element.categoryId : 'select category' }}
+    </a>
+    <span class="list-item"> category</span>
+</script>
+
+<script type="text/ng-template" id="ConditionProductIs.html">
+    <span class="list-item">Product is </span>
+    <a ng-if="!element1.productIds || element1.productIds.length < 1" class="__link" ng-click="openProductSelectWizard(element1)">
+        {{ 'select product' }}
+    </a>
+    <a ng-if="element1.productIds.length == 1" class="__link" ng-click="openProductSelectWizard(element1)">
+        {{ element1.productNames[0] || element1.productIds[0] }}
+    </a>
+    <a ng-if="element1.productIds.length > 1" class="__link" ng-click="openProductSelectWizard(element1)">
+        {{ 'show ' + element1.productIds.length + ' items' }}
+    </a>
+</script>
+
+<script type="text/ng-template" id="ConditionProductIsNot.html">
+    <span class="list-item">excluding </span>
+    <a ng-if="!element.productIds || element.productIds.length < 1" class="__link" ng-click="openProductSelectWizard(element)">
+        {{ 'select product' }}
+    </a>
+    <a ng-if="element.productIds.length == 1" class="__link" ng-click="openProductSelectWizard(element)">
+        {{ element.productNames[0] || element.productIds[0] }}
+    </a>
+    <a ng-if="element.productIds.length > 1" class="__link" ng-click="openProductSelectWizard(element)">
+        {{ 'show ' + element.productIds.length + ' items' }}
+    </a>
+</script>
+
+<script type="text/ng-template" id="ConditionVendorIs.html">
+    <span class="list-item">Vendor is </span>
+    <a class="__link" ng-click="openVendorSelectWizard(element1)">
+        {{ element1.vendorIds.length > 0 ? element1.vendorNames.join(', ') : 'select vendor'}}
+    </a>
+</script>

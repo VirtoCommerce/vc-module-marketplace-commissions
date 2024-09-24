@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+  <id>VirtoCommerce.MarketplaceCommissions</id>
+  <version>3.800.0</version>
+  <version-tag></version-tag>
+
+  <platformVersion>3.825.0</platformVersion>
+  <dependencies>
+    <dependency id="VirtoCommerce.MarketplaceVendor" version="3.814.0" />
+  </dependencies>
+
+  <title>VirtoCommerce MarketplaceCommissions extension module.</title>
+  <description>VirtoCommerce MarketplaceCommissions extension module</description>
+
+  <authors>
+    <author>Vladimir Buravlev</author>
+  </authors>
+  <owners>
+    <owner>VirtoCommerce</owner>
+  </owners>
+
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-marketplace-commissions-module</projectUrl>
+  <iconUrl>Modules/$(VirtoCommerce.MarketplaceCommissions)/Content/logo.png</iconUrl>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+  <assemblyFile>VirtoCommerce.MarketplaceCommissionsModule.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.MarketplaceCommissionsModule.Web.Module, VirtoCommerce.MarketplaceCommissionsModule.Web</moduleType>
+
+  <releaseNotes>First version.</releaseNotes>
+  <copyright>Copyright © 2024 VirtoCommerce. All rights reserved</copyright>
+  <tags>Marketplace Commissions module</tags>
+  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+</module>

@@ -1,0 +1,16 @@
+[
+  {
+    "Id": "CommissionFeeTestId",
+    "Name": "My test commission",
+    "Description": "My test commission description",
+    "Type": "Static",
+    "CalculationType": "Fixed",
+    "Fee": 1.00,
+    "Priority": 0,
+    "IsActive": true,
+    "IsDefault": true,
+    "PredicateVisualTreeSerialized": null,
+    "CreatedDate": "2024-09-19",
+    "CreatedBy": "Initial data seed"
+  }
+]

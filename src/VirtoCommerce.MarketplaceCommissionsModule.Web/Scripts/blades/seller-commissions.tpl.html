@@ -1,0 +1,25 @@
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <form class="form" name="formScope" ng-controller="virtoCommerce.marketplaceCommissionsModule.sellerCommissionsController">
+                <div class="form-group" ng-init="setForm(formScope)">
+                    <label class="form-label">
+                        {{ 'marketplace.blades.seller-details.labels.fee' | translate }}
+                        <a href="" ng-click="blade.openStaticCommissions()" class="form-edit" va-permission="operator:resources">
+                            <i class="form-ico fa fa-pencil"></i>
+                        </a>
+                    </label>
+                    <div class="form-input">
+                        <ui-select ng-model="blade.currentEntity"
+                                   search-enabled="false">
+                            <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="x in blade.staticFees">
+                                <span ng-bind-html="x.name"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

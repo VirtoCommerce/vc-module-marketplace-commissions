@@ -1,0 +1,53 @@
+<div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
+<div class="blade-content __medium-wide">
+    <div class="blade-inner">
+        <div class="inner-block" ng-init="setGridOptions('fee-dynamic-grid', {
+                    useExternalSorting: true,
+                    data: 'listEntries',
+                    rowTemplate: 'list.row.html',
+                    rowHeight: 61,
+                    columnDefs: [
+                                { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
+                                { name: 'name', displayName: 'marketplace.blades.fee-dynamic-list.labels.name' },
+                                { name: 'isActive', displayName: 'marketplace.blades.fee-dynamic-list.labels.state', cellTemplate: 'active.cell.html' },
+                                { name: 'fee', displayName: 'marketplace.blades.fee-dynamic-list.labels.fee-amount' },
+                                { name: 'calculationType', displayName: 'marketplace.blades.fee-dynamic-list.labels.calculation-type', cellTemplate: 'calculation-type.cell.html' }
+                                ]
+                })">
+            <div class="note" ng-if="!listEntries.length">{{ 'platform.list.no-data' | translate }}</div>
+            <div class="table-wrapper" ng-if="listEntries.length">
+                <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height ui-grid-validate></div>
+                <ul class="menu __context" role="menu" id="fee_menu">
+                    <li class="menu-item" ng-click='edit(contextMenuEntity)'>
+                        <i class="menu-ico fa fa-pencil"></i> {{ 'platform.commands.edit' | translate }}
+                    </li>
+                    <li class="menu-item" ng-click='delete(contextMenuEntity)'>
+                        <i class="menu-ico fas fa-trash-alt"></i> {{ 'platform.commands.delete' | translate }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="list.row.html">
+    <div ng-click='grid.appScope.selectNode(row.entity)' ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{ 'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id === grid.appScope.selectedNodeId }" role="{{ col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell context-menu="grid.appScope.contextMenuEntity = row.entity" data-target="fee_menu"></div>
+</script>
+
+<script type="text/ng-template" id="list-actions.cell.html">
+    <div class="ui-grid-actions" left-click-menu="grid.appScope.contextMenuEntity = row.entity" data-target="fee_menu">
+        <i class="fa fa-ellipsis-v"></i>
+    </div>
+</script>
+
+<script type="text/ng-template" id="active.cell.html">
+  <div class="ui-grid-cell-contents" ng-if="COL_FIELD">
+    {{ 'marketplace-commissions.blades.fee-dynamic-list.labels.active' | translate }}
+  </div>
+</script>
+
+<script type="text/ng-template" id="calculation-type.cell.html">
+  <div class="ui-grid-cell-contents">
+    {{ 'marketplace-commissions.blades.fee-dynamic-details.calculation-types.' + COL_FIELD.toLowerCase() | translate }}
+  </div>
+</script>

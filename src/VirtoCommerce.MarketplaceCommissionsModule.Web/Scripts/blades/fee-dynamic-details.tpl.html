@@ -1,0 +1,99 @@
+<div ng-if="blade.isNew" class="blade-static __bottom">
+    <button class="btn" ng-click="saveChanges()" ng-disabled="formScope != undefined && formScope.$invalid">{{ 'platform.commands.create' | translate }}</button>
+</div>
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <form class="form" name="formScope">
+                <div class="form-group" ng-init="setForm(formScope)">
+                  <label class="form-label">{{ 'marketplace-commissions.blades.fee-dynamic-details.labels.name' | translate }}</label>
+                    <div class="form-input">
+                        <input ng-model="blade.currentEntity.name"
+                               placeholder="{{ 'marketplace-commissions.blades.fee-dynamic-details.placeholders.name' | translate }}"
+                               type="text"
+                               maxlength="254"
+                               required>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">{{ 'marketplace-commissions.blades.fee-dynamic-details.labels.description' | translate }}</label>
+                    <div class="form-input">
+                        <textarea ng-model="blade.currentEntity.description"
+                                  placeholder="{{ 'marketplace-commissions.blades.fee-dynamic-details.placeholders.description' | translate }}"
+                                  maxlength="4000">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="columns clearfix">
+                    <div class="column">
+                        <div class="form-group">
+                          <label class="form-label">{{ 'marketplace-commissions.blades.fee-dynamic-details.labels.is-active' | translate }}</label>
+                            <div class="form-input">
+                                <label class="form-label __switch">
+                                    <input type="checkbox"
+                                           ng-model="blade.currentEntity.isActive" />
+                                    <span class="switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="form-group">
+                          <label class="form-label">{{ 'marketplace-commissions.blades.fee-dynamic-details.labels.priority' | translate }}</label>
+                            <div class="form-input" __number>
+                                <input ng-model="blade.currentEntity.priority"
+                                       placeholder="{{ 'marketplace-commissions.blades.fee-dynamic-details.placeholders.priority' | translate }}"
+                                       type="number" num-type="integer" required ui-validate-async="'validatePriorityAsync($value)'">
+                            </div>
+                            <span class="comment-text" ng-if="errorData==='PriorityNotPositive'">
+                              <img src="/images/layout/warning.svg" class="comment-icon">
+                              {{ 'marketplace-commissions.blades.fee-dynamic-details.errors.priority-not-positive' | translate }}
+                            </span>
+                            <span class="comment-text" ng-if="errorData==='PriorityNotInteger'">
+                              <img src="/images/layout/warning.svg" class="comment-icon">
+                              {{ 'marketplace-commissions.blades.fee-dynamic-details.errors.priority-not-integer' | translate }}
+                            </span>
+                            <span class="comment-text">
+                              {{ 'marketplace-commissions.blades.fee-dynamic-details.comments.priority' | translate }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns clearfix">
+                    <div class="column">
+                        <div class="form-group">
+                          <label class="form-label">{{ 'marketplace-commissions.blades.fee-dynamic-details.labels.fee-amount' | translate }}</label>
+                            <div class="form-input">
+                                <input ng-model="blade.currentEntity.fee"
+                                       placeholder="{{ 'marketplace-commissions.blades.fee-dynamic-details.placeholders.fee-amount' | translate }}"
+                                       money required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="form-group">
+                          <label class="form-label">{{ 'marketplace-commissions.blades.fee-dynamic-details.labels.calculation-type' | translate }}</label>
+                            <div class="form-input">
+                                <ui-select ng-model="blade.currentEntity.calculationType"
+                                           search-enabled="false">
+                                  <ui-select-match>{{ 'marketplace-commissions.blades.fee-dynamic-details.calculation-types.' + $select.selected.toLowerCase() | translate }}</ui-select-match>
+                                    <ui-select-choices repeat="x in blade.calculationTypes">
+                                        <span ng-bind-html="'marketplace.blades.fee-dynamic-details.calculation-types.' + x | translate"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="blade.currentEntity.expressionTree">
+                    <fieldset>
+                      <legend>{{'marketplace-commissions.blades.fee-dynamic-details.labels.commission-fee-conditions' | translate}}</legend>
+                        <div class="dynamic-expression">
+                            <va-dynamic-expression-tree source="blade.currentEntity.expressionTree"></va-dynamic-expression-tree>
+                        </div>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

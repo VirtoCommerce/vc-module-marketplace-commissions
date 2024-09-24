@@ -1,0 +1,151 @@
+{
+  "marketplace-commissions": {
+    "main-menu": {
+      "fees": "Commissions"
+    },
+    "blades": {
+      "fees": {
+        "title": "Commissions",
+        "subtitle": "Manage your commission calculation rules here",
+        "menu": {
+          "static": {
+            "title": "Static"
+          },
+          "dynamic": {
+            "title": "Dynamic"
+          }
+        }
+      },
+      "fee-dynamic-list": {
+        "title": "Dynamic commissions",
+        "subtitle": "Review and manage your dynamic commissions here",
+        "labels": {
+          "active": "Active",
+          "calculation-type": "Calculation Type",
+          "fee-amount": "Amount",
+          "name": "Name",
+          "state": "State"
+        }
+      },
+      "fee-dynamic-details": {
+        "subtitle": "Configure your commission details",
+        "labels": {
+          "name": "Name",
+          "description": "Description",
+          "is-active": "Active",
+          "priority": "Priority",
+          "commission-fee-conditions": "Commission fee conditions",
+          "fee-amount": "Fee amount",
+          "calculation-type": "Calculation type"
+        },
+        "placeholders": {
+          "name": "Enter name",
+          "description": "Enter description",
+          "is-active": "State",
+          "priority": "Priority",
+          "fee-amount": "Fee amount"
+        },
+        "calculation-types": {
+          "percent": "%",
+          "fixed": "Fixed"
+        },
+        "comments": {
+          "priority": "The commission with the highest priority is applied first"
+        },
+        "errors": {
+          "priority-not-integer": "Priority value should be integer",
+          "priority-not-positive": "Priority value should be more than zero"
+        }
+      },
+      "fee-dynamic-add": {
+        "title": "New commission",
+        "subtitle": "Configure your commission details"
+      },
+      "fee-static-list": {
+        "title": "Static commissions",
+        "subtitle": "Review and manage your static commissions here",
+        "labels": {
+          "default": "Default",
+          "name": "Name",
+          "fee-amount": "Amount",
+          "calculation-type": "Calculation Type",
+          "commission-rate": "Commission rate: "
+        }
+      },
+      "fee-static-add": {
+        "title": "New commission",
+        "subtitle": "Configure your commission details"
+      },
+      "fee-static-details": {
+        "subtitle": "Configure your commission details",
+        "labels": {
+          "name": "Name",
+          "description": "Description",
+          "default": "Default",
+          "set-default": "Set default",
+          "fee-amount": "Fee amount",
+          "calculation-type": "Calculation type"
+        },
+        "placeholders": {
+          "name": "Enter name",
+          "description": "Enter description",
+          "default": "Default",
+          "fee-amount": "Fee amount"
+        },
+        "calculation-types": {
+          "percent": "%",
+          "fixed": "Fixed"
+        },
+        "errors": {
+          "can-not-remove-default": "Unable to remove Default commission"
+        }
+      },
+      "order-fee-list": {
+        "title": "Line items commission details",
+        "labels": {
+          "commission-name": "Commission name",
+          "fee": "Commission",
+          "line-item-name": "Line item"
+        }
+      },
+      "seller-commissions": {
+        "title": "Commissions"
+      }
+    },
+    "dialogs": {
+      "fee-dynamic-delete": {
+        "title": "Confirm delete",
+        "message": "Are you sure you want to delete this commission?"
+      },
+      "fee-dynamic-list-delete": {
+        "title": "Confirm delete",
+        "message": "Are you sure you want to delete this commissions?"
+      },
+      "fee-dynamic-save": {
+        "title": "Save changes",
+        "message": "This commission has been modified. Do you want to save changes?"
+      },
+      "fee-static-delete": {
+        "title": "Confirm delete",
+        "message": "Are you sure you want to delete this commission?"
+      },
+      "fee-static-save": {
+        "title": "Save changes",
+        "message": "This commission has been modified. Do you want to save changes?"
+      }
+    },
+    "widgets": {
+      "order-fee": {
+        "title": "Commissions"
+      },
+      "seller-commissions": {
+        "title": "Commissions"
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.MarketplaceCommissions": {
+      "description": "Export/Import of Commissions"
+    }
+  }
+}
