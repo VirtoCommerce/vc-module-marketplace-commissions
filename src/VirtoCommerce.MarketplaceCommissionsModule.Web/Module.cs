@@ -73,7 +73,7 @@ public class Module : IModule, IHasConfiguration
         var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
         permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "MarketplaceCommissionsModule", ModuleConstants.Security.Permissions.AllPermissions);
 
-        //Register condition trees expressions into the AbstractFactory<IConditionTree>
+        // Register condition trees expressions into the AbstractFactory<IConditionTree>
         foreach (var conditionTree in AbstractTypeFactory<DynamicCommissionFeeTreePrototype>.TryCreateInstance().Traverse<IConditionTree>(x => x.AvailableChildren))
         {
             AbstractTypeFactory<IConditionTree>.RegisterType(conditionTree.GetType());
