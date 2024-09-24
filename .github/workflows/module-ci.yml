@@ -92,7 +92,7 @@ jobs:
         with:
           versionSuffix: ${{ env.VERSION_SUFFIX }}
 
-      - name: Build Reviews Module
+      - name: Build Commissions Module
         uses: ./.github/actions/build-commissions-module
 
       - name: Build
