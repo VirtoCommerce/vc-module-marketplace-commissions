@@ -1,0 +1,17 @@
+# v2.0.0
+name: Build Commissions Module
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Install dependencies for Commissions Module
+      shell: bash
+      working-directory: src/VirtoCommerce.MarketplaceCommissionsModule.Web/commissions-app
+      run: yarn
+
+    - name: Build Commissions Module
+      shell: bash
+      working-directory:  src/VirtoCommerce.MarketplaceCommissionsModule.Web/commissions-app
+      run: yarn build:modules-bundle
