@@ -25,6 +25,11 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Core.Domains
 
         public virtual void Update(CommissionFeeDetails commissionFee)
         {
+            if (commissionFee == null)
+            {
+                throw new ArgumentNullException(nameof(commissionFee));
+            }
+
             Name = commissionFee.Name;
             Description = commissionFee.Description;
             Type = commissionFee.Type;
@@ -37,6 +42,11 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Core.Domains
 
         public static CommissionFee CreateNew(CommissionFeeDetails commissionFee)
         {
+            if (commissionFee == null)
+            {
+                throw new ArgumentNullException(nameof(commissionFee));
+            }
+
             var result = new CommissionFee
             {
                 Name = commissionFee.Name,

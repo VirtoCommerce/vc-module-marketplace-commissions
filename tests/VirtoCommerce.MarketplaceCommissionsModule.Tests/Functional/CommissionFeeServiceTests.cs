@@ -9,7 +9,7 @@ using Xunit;
 
 namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
 {
-    public class CommissionFeeIsDefaultTests
+    public class CommissionFeeServiceTests
     {
         [Fact]
         public async Task Create_new_fee()
