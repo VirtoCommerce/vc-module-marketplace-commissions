@@ -793,9 +793,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/api-client-generator@npm:^1.0.294":
-  version: 1.0.294
-  resolution: "@vc-shell/api-client-generator@npm:1.0.294"
+"@vc-shell/api-client-generator@npm:^1.0.296":
+  version: 1.0.296
+  resolution: "@vc-shell/api-client-generator@npm:1.0.296"
   dependencies:
     chalk: "npm:^2.4.2"
     cross-spawn: "npm:^7.0.3"
@@ -804,13 +804,13 @@ __metadata:
     vite-plugin-dts: "npm:^3.6.4"
   bin:
     api-client-generator: ./dist/api-client-generator.js
-  checksum: 10/5c065f31e76ac9fb4b04c64fc65800f03d1cd71a413a2470f01d44eff372ca20d56efc8714889a5d8830b91df8f2263b37dd7a22665ad1de7fc39e6b8e8d1c7a
+  checksum: 10/b33be9f58f902044e68becb88f0d797ea866ef458fb11de377e14c6b63981b8cce0577c7593b994c5811128b907a0d5e313bc6decc7387dcd87a66135376d726
   languageName: node
   linkType: hard
 
-"@vc-shell/framework@npm:^1.0.294":
-  version: 1.0.294
-  resolution: "@vc-shell/framework@npm:1.0.294"
+"@vc-shell/framework@npm:^1.0.296":
+  version: 1.0.296
+  resolution: "@vc-shell/framework@npm:1.0.296"
   dependencies:
     "@floating-ui/vue": "npm:^1.0.6"
     "@headlessui/vue": "npm:^1.7.19"
@@ -839,14 +839,14 @@ __metadata:
     vue3-application-insights: "npm:^1.1.0"
     vue3-touch-events: "npm:^4.1.8"
     whatwg-fetch: "npm:^3.6.19"
-  checksum: 10/3865da72d9bac5854f087143ed31fcf38921e00a1ab4714e07edef67218478632f3a1bf4cf95d5322e5cdab4e7ba5725763b7cf62c512bce7ee1d35501aad747
+  checksum: 10/35cc977ecfc412dc5b9488a17537b9a1217e0b84a5b0d8222a53b17f9b5b48186085c796d05d0058fd85e7ccff399e215139399112f8157e64d54740a091478d
   languageName: node
   linkType: hard
 
-"@vc-shell/ts-config@npm:^1.0.294":
-  version: 1.0.294
-  resolution: "@vc-shell/ts-config@npm:1.0.294"
-  checksum: 10/5fdf56cae8bbeed172930d20232f43aaae17a08da1ff3bc43b5da277f7125b60ccb5a8aa79597d61dae53ba89a641067d1743fd2c7492cdc3dba3600889ebaca
+"@vc-shell/ts-config@npm:^1.0.296":
+  version: 1.0.296
+  resolution: "@vc-shell/ts-config@npm:1.0.296"
+  checksum: 10/ad0a1e741447c2dbebc62b2e14069da9192f630f54541acacc60c750b9ed9a669fde54111e9efbca7491873fab2b8be9e8e0acddc59c0c285dc2ca6a44ba29c7
   languageName: node
   linkType: hard
 
@@ -3222,9 +3222,9 @@ __metadata:
   resolution: "vcmp-marketplace-commissions@workspace:."
   dependencies:
     "@types/lodash-es": "npm:^4.17.6"
-    "@vc-shell/api-client-generator": "npm:^1.0.294"
-    "@vc-shell/framework": "npm:^1.0.294"
-    "@vc-shell/ts-config": "npm:^1.0.294"
+    "@vc-shell/api-client-generator": "npm:^1.0.296"
+    "@vc-shell/framework": "npm:^1.0.296"
+    "@vc-shell/ts-config": "npm:^1.0.296"
     "@vcmp-marketplace-commissions/api": "npm:^1.0.0"
     cross-env: "npm:^7.0.3"
     lodash-es: "npm:^4.17.21"
