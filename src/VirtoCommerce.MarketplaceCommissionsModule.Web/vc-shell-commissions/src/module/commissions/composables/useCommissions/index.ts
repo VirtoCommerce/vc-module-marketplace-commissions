@@ -1,6 +1,6 @@
 import { useApiClient } from "@vc-shell/framework";
 import { VcmpSellerCommissionClient } from "@vcmp-marketplace-commissions/api/marketplacecommissions";
-import { type Ref, computed, inject, toRef, onMounted, ref, watch, onBeforeMount } from "vue";
+import { type Ref, computed, inject, toRef, ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import * as _ from "lodash-es";
 
@@ -36,14 +36,6 @@ export const useCommissions = (arg: { scope: Record<string, unknown>; item: any 
     fee.value = await getCommissions();
     scope.value.computedFee = computedFee.value;
   });
-
-  watch(
-    () => arg.item,
-    (newVal) => {
-      console.log("newVal", newVal.value);
-    },
-    { deep: true },
-  );
 
   return {
     scope: _.merge(scope.value, arg.scope),
