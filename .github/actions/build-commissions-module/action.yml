@@ -8,10 +8,10 @@ runs:
 
     - name: Install dependencies for Commissions Module
       shell: bash
-      working-directory: src/VirtoCommerce.MarketplaceCommissionsModule.Web/commissions-app
+      working-directory: src/VirtoCommerce.MarketplaceCommissionsModule.Web/vc-shell-commissions
       run: yarn
 
     - name: Build Commissions Module
       shell: bash
-      working-directory:  src/VirtoCommerce.MarketplaceCommissionsModule.Web/commissions-app
-      run: yarn build:modules-bundle
+      working-directory:  src/VirtoCommerce.MarketplaceCommissionsModule.Web/vc-shell-commissions
+      run: yarn build
