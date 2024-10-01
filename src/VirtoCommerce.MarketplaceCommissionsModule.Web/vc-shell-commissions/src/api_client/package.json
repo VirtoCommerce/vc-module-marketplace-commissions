@@ -1,0 +1,13 @@
+{
+  "name": "@vcmp-marketplace-commissions/api",
+  "version": "1.0.0",
+  "files": [
+    "package.json"
+  ],
+  "exports": {
+    "./marketplacecommissions": {
+      "import": "./virtocommerce.marketplacecommissions.js",
+      "types": "./types/virtocommerce.marketplacecommissions.d.ts"
+    }
+  }
+}

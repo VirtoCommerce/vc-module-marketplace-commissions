@@ -1,0 +1,10 @@
+{
+  "COMMISSIONS": {
+    "CONTROL": {
+      "COMMISSION": {
+            "LABEL": "Commission fee",
+            "PLACEHOLDER": "Select commission fee"
+          }
+    }
+  }
+}
