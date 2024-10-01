@@ -33,7 +33,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Services
             _logger = logger;
         }
 
-        public async Task<EntryFee[]> EvaluateFeeAsync(CommissionFeeEvaluationContext context)
+        public virtual async Task<EntryFee[]> EvaluateFeeAsync(CommissionFeeEvaluationContext context)
         {
             if (context == null)
             {
