@@ -8,7 +8,7 @@ if (AppDependencies !== undefined) {
 angular.module(moduleName, [])
     .config(['$stateProvider',
         function ($stateProvider) {
-            $stateProvider.state('workspace.fees',
+            $stateProvider.state('workspace.commissions',
                 {
                     url: '/fees',
                     templateUrl: '$(Platform)/Scripts/common/templates/home.tpl.html',
@@ -36,7 +36,7 @@ angular.module(moduleName, [])
                 icon: 'fa fa-usd',
                 title: 'marketplace-commissions.main-menu.fees',
                 priority: 35,
-                action: function () { $state.go('workspace.fees'); },
+                action: function () { $state.go('workspace.commissions'); },
                 permission: 'operator:commissions'
             };
             mainMenuService.addMenuItem(menuItem);
