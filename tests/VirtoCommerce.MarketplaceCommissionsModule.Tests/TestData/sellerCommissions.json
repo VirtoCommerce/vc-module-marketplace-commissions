@@ -1,9 +1,0 @@
-[
-  {
-    "Id": "TestId",
-    "SellerId": "SellerTestId",
-    "CommissionFeeId": "CommissionFeeTestId",
-    "CreatedDate": "2024-09-19",
-    "CreatedBy": "Initial data seed"
-  }
-]

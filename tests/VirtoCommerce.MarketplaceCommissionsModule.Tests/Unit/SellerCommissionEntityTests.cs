@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Moq;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Models;
@@ -36,36 +35,40 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
             Assert.Throws<ArgumentNullException>(actual);
         }
 
-        [Fact]
-        public void ConvertSellerCommissionEntityFromModelToModel_NotNull_ReturnsSameValue()
+        [Theory]
+        [MemberData(nameof(Input))]
+        public void ConvertSellerCommissionEntityFromModelToModel_NotNull_ReturnsSameValue(SellerCommissionEntity originalSellerCommissionEntity)
         {
             // Arrange
-            var originalSellerCommissionEntities = TestHepler.LoadFromJsonFile<SellerCommissionEntity[]>(@"sellerCommissions.json");
-            var convertedSellerCommissionEntities = new List<SellerCommissionEntity>();
             var pkMap = new Mock<PrimaryKeyResolvingMap>();
-            int index = 0;
 
             // Act
-            foreach (var originalSellerCommissionEntity in originalSellerCommissionEntities)
-            {
-                var convertedSellerCommission = originalSellerCommissionEntity.ToModel(new SellerCommission());
-                var convertedSellerCommissionEntity = new SellerCommissionEntity().FromModel(convertedSellerCommission, pkMap.Object);
-                convertedSellerCommissionEntities.Add(convertedSellerCommissionEntity);
-            }
+            var convertedSellerCommission = originalSellerCommissionEntity.ToModel(new SellerCommission());
+            var convertedSellerCommissionEntity = new SellerCommissionEntity().FromModel(convertedSellerCommission, pkMap.Object);
 
             // Assertion
-            foreach (var originalSellerCommissionEntity in originalSellerCommissionEntities)
-            {
-                var convertedSellerCommissionEntity = convertedSellerCommissionEntities[index++];
+            Assert.Equal(originalSellerCommissionEntity.Id, convertedSellerCommissionEntity.Id);
+            Assert.Equal(originalSellerCommissionEntity.SellerId, convertedSellerCommissionEntity.SellerId);
+            Assert.Equal(originalSellerCommissionEntity.CommissionFeeId, convertedSellerCommissionEntity.CommissionFeeId);
+            Assert.Equal(originalSellerCommissionEntity.CreatedDate, convertedSellerCommissionEntity.CreatedDate);
+            Assert.Equal(originalSellerCommissionEntity.ModifiedDate, convertedSellerCommissionEntity.ModifiedDate);
+            Assert.Equal(originalSellerCommissionEntity.CreatedBy, convertedSellerCommissionEntity.CreatedBy);
+            Assert.Equal(originalSellerCommissionEntity.ModifiedBy, convertedSellerCommissionEntity.ModifiedBy);
+        }
 
-                Assert.Equal(originalSellerCommissionEntity.Id, convertedSellerCommissionEntity.Id);
-                Assert.Equal(originalSellerCommissionEntity.SellerId, convertedSellerCommissionEntity.SellerId);
-                Assert.Equal(originalSellerCommissionEntity.CommissionFeeId, convertedSellerCommissionEntity.CommissionFeeId);
-                Assert.Equal(originalSellerCommissionEntity.CreatedDate, convertedSellerCommissionEntity.CreatedDate);
-                Assert.Equal(originalSellerCommissionEntity.ModifiedDate, convertedSellerCommissionEntity.ModifiedDate);
-                Assert.Equal(originalSellerCommissionEntity.CreatedBy, convertedSellerCommissionEntity.CreatedBy);
-                Assert.Equal(originalSellerCommissionEntity.ModifiedBy, convertedSellerCommissionEntity.ModifiedBy);
-            }
+        public static TheoryData<SellerCommissionEntity> Input()
+        {
+            return new TheoryData<SellerCommissionEntity>()
+            {
+                new SellerCommissionEntity
+                {
+                    Id = "TestId",
+                    SellerId = "SellerTestId",
+                    CommissionFeeId = "CommissionFeeTestId",
+                    CreatedDate = new DateTime(2024, 09, 19),
+                    CreatedBy = "Initial data seed"
+                }
+            };
         }
     }
 }

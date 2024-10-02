@@ -19,6 +19,16 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
         private const string _commissionFeeId = "CommissionFeeTestId";
         private const string _commissionFeeType = "Static";
         private const bool _commissionFeeIsDefault = true;
+        private static CommissionFee _commissionFee = new()
+        {
+            Id = "CommissionFeeTestId",
+            Name = "My test commission",
+            Type = CommissionFeeType.Static,
+            CalculationType = FeeCalculationType.Fixed,
+            Fee = 1,
+            Priority = 0,
+            IsDefault = true,
+        };
 
         private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
         private readonly Mock<ICacheEntry> _cacheEntryMock;
@@ -91,7 +101,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
         {
             var commissionFeeService = new Mock<ICommissionFeeService>();
 
-            var commissionFees = TestHepler.LoadFromJsonFile<CommissionFee[]>(@"commissionFees.json");
+            CommissionFee[] commissionFees = [_commissionFee];
 
             commissionFeeService
                 .Setup(x => x.GetAsync(new[] { _commissionFeeId }, It.IsAny<string>(), It.IsAny<bool>()))

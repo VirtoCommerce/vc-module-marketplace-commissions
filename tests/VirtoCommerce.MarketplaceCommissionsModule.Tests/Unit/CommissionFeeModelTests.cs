@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using Xunit;
 
@@ -21,34 +19,22 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
             Assert.Throws<ArgumentNullException>(actual);
         }
 
-        [Fact]
-        public void CommissionFeeCreateNewFromDetails_NotNull_ReturnsActualValue()
+        [Theory]
+        [MemberData(nameof(Input))]
+        public void CommissionFeeCreateNewFromDetails_NotNull_ReturnsActualValue(CommissionFeeDetails commissionFeeDetail)
         {
             // Arrange
-            var commissionFeeDetails = TestHepler.LoadFromJsonFile<CommissionFeeDetails[]>(@"commissionFeeDetails.json");
-            var staticCommissionFeeDetails = commissionFeeDetails.Where(x => x.Type == CommissionFeeType.Static).ToArray();
-            var commissionFees = new List<CommissionFee>();
-            int index = 0;
 
             // Act
-            foreach (var commissionFeeDetail in staticCommissionFeeDetails)
-            {
-                var commissionFee = CommissionFee.CreateNew(commissionFeeDetail);
-                commissionFees.Add(commissionFee);
-            }
+            var commissionFee = CommissionFee.CreateNew(commissionFeeDetail);
 
             // Assertion
-            foreach (var commissionFeeDetail in staticCommissionFeeDetails)
-            {
-                var commissionFee = commissionFees[index++];
-
-                Assert.Equal(commissionFeeDetail.Name, commissionFee.Name);
-                Assert.Equal(commissionFeeDetail.Description, commissionFee.Description);
-                Assert.Equal(commissionFeeDetail.Type, commissionFee.Type);
-                Assert.Equal(commissionFeeDetail.CalculationType, commissionFee.CalculationType);
-                Assert.Equal(commissionFeeDetail.Fee, commissionFee.Fee);
-                Assert.Equal(commissionFeeDetail.Priority, commissionFee.Priority);
-            }
+            Assert.Equal(commissionFeeDetail.Name, commissionFee.Name);
+            Assert.Equal(commissionFeeDetail.Description, commissionFee.Description);
+            Assert.Equal(commissionFeeDetail.Type, commissionFee.Type);
+            Assert.Equal(commissionFeeDetail.CalculationType, commissionFee.CalculationType);
+            Assert.Equal(commissionFeeDetail.Fee, commissionFee.Fee);
+            Assert.Equal(commissionFeeDetail.Priority, commissionFee.Priority);
         }
 
         [Fact]
@@ -65,35 +51,23 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
             Assert.Throws<ArgumentNullException>(actual);
         }
 
-        [Fact]
-        public void CommissionFeeUpdateFromDetails_NotNull_ReturnsActualValue()
+        [Theory]
+        [MemberData(nameof(Input))]
+        public void CommissionFeeUpdateFromDetails_NotNull_ReturnsActualValue(CommissionFeeDetails commissionFeeDetail)
         {
             // Arrange
-            var commissionFeeDetails = TestHepler.LoadFromJsonFile<CommissionFeeDetails[]>(@"commissionFeeDetails.json");
-            var staticCommissionFeeDetails = commissionFeeDetails.Where(x => x.Type == CommissionFeeType.Static).ToArray();
-            var commissionFees = new List<CommissionFee>();
-            int index = 0;
 
             // Act
-            foreach (var commissionFeeDetail in staticCommissionFeeDetails)
-            {
-                var commissionFee = new CommissionFee();
-                commissionFee.Update(commissionFeeDetail);
-                commissionFees.Add(commissionFee);
-            }
+            var commissionFee = new CommissionFee();
+            commissionFee.Update(commissionFeeDetail);
 
             // Assertion
-            foreach (var commissionFeeDetail in staticCommissionFeeDetails)
-            {
-                var commissionFee = commissionFees[index++];
-
-                Assert.Equal(commissionFeeDetail.Name, commissionFee.Name);
-                Assert.Equal(commissionFeeDetail.Description, commissionFee.Description);
-                Assert.Equal(commissionFeeDetail.Type, commissionFee.Type);
-                Assert.Equal(commissionFeeDetail.CalculationType, commissionFee.CalculationType);
-                Assert.Equal(commissionFeeDetail.Fee, commissionFee.Fee);
-                Assert.Equal(commissionFeeDetail.Priority, commissionFee.Priority);
-            }
+            Assert.Equal(commissionFeeDetail.Name, commissionFee.Name);
+            Assert.Equal(commissionFeeDetail.Description, commissionFee.Description);
+            Assert.Equal(commissionFeeDetail.Type, commissionFee.Type);
+            Assert.Equal(commissionFeeDetail.CalculationType, commissionFee.CalculationType);
+            Assert.Equal(commissionFeeDetail.Fee, commissionFee.Fee);
+            Assert.Equal(commissionFeeDetail.Priority, commissionFee.Priority);
         }
 
         [Fact]
@@ -149,6 +123,26 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
 
             // Assertion
             Assert.Equal(expectedFee, calculatedFee);
+        }
+
+        public static TheoryData<CommissionFeeDetails> Input()
+        {
+            return new TheoryData<CommissionFeeDetails>()
+            {
+                new CommissionFeeDetails
+                {
+                    Id = "CommissionFeeTestId",
+                    Name = "My test commission details",
+                    Description = "My test commission details description",
+                    Type = CommissionFeeType.Static,
+                    CalculationType = FeeCalculationType.Fixed,
+                    Fee = 1,
+                    Priority = 0,
+                    IsActive = true,
+                    IsDefault = true,
+                    ExpressionTree = null
+                }
+            };
         }
     }
 }
