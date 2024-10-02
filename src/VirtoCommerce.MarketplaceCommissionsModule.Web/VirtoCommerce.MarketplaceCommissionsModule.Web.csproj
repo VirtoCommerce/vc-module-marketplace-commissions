@@ -8,6 +8,12 @@
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="vc-shell-commissions\**" />
+    <Content Remove="vc-shell-commissions\**" />
+    <EmbeddedResource Remove="vc-shell-commissions\**" />
+    <None Remove="vc-shell-commissions\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="VirtoCommerce.MarketplaceVendorModule.Core" Version="3.817.0-alpha.782" />
   </ItemGroup>
   <ItemGroup>
