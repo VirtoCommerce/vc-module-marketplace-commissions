@@ -52,7 +52,7 @@ angular.module('virtoCommerce.marketplaceCommissionsModule')
                 ];
 
                 blade.onClose = function (closeCallback) {
-                    bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "marketplace-commissions.dialogs.fee-static-save.title", "marketplace.dialogs.fee-static-save.message");
+                    bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "marketplace-commissions.dialogs.fee-static-save.title", "marketplace-commissions.dialogs.fee-static-save.message");
                 };
 
                 function isDirty() {

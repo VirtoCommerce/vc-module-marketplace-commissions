@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -22,7 +21,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
             var commissionFee = await _commissionFeeService.GetByIdAsync(request.Id);
             if (commissionFee.IsDefault)
             {
-                throw new OperationCanceledException("Unable to delete default fee");
+                //throw new OperationCanceledException("Unable to delete default fee");
             }
             await _commissionFeeService.DeleteAsync(new[] { request.Id });
             return Unit.Value;
