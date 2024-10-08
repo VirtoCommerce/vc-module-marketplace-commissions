@@ -23,4 +23,10 @@
     <ProjectReference Include="..\VirtoCommerce.MarketplaceCommissionsModule.Data.SqlServer\VirtoCommerce.MarketplaceCommissionsModule.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.MarketplaceCommissionsModule.Data\VirtoCommerce.MarketplaceCommissionsModule.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <CommissionsApp Include="vc-shell-commissions\dist\**" />
+  </ItemGroup>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(CommissionsApp)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
 </Project>
