@@ -8,12 +8,16 @@ using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.MarketplaceCommissionsModule.Core;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Services;
+using VirtoCommerce.MarketplaceCommissionsModule.Data.IntegrationEventHandlers;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.MySql;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.PostgreSql;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Repositories;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Services;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.SqlServer;
+using VirtoCommerce.MarketplaceVendorModule.Core.IntegrationEvents;
+using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -56,6 +60,9 @@ public class Module : IModule, IHasConfiguration
 
         serviceCollection.AddTransient<ISellerCommissionCrudService, SellerCommissionCrudService>();
 
+        serviceCollection.AddTransient<CustomerOrderCreatedEventHandler>();
+        serviceCollection.AddTransient<SellerOrderCreatedIntegrationEventHandler>();
+
         serviceCollection.AddMediatR(typeof(Data.Anchor));
 
         //TODO: realize virto export
@@ -72,6 +79,9 @@ public class Module : IModule, IHasConfiguration
         // Register permissions
         var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
         permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "MarketplaceCommissionsModule", ModuleConstants.Security.Permissions.AllPermissions);
+
+        appBuilder.RegisterEventHandler<OrderChangedEvent, CustomerOrderCreatedEventHandler>();
+        appBuilder.RegisterEventHandler<SellerOrderCreatedIntegrationEvent, SellerOrderCreatedIntegrationEventHandler>();
 
         // Register condition trees expressions into the AbstractFactory<IConditionTree>
         foreach (var conditionTree in AbstractTypeFactory<DynamicCommissionFeeTreePrototype>.TryCreateInstance().Traverse<IConditionTree>(x => x.AvailableChildren))

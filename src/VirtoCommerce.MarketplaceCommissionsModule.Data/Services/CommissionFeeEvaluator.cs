@@ -43,14 +43,15 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Services
             var productIdSellerMap = await _sellerByProductIdResolver.ResolveByProductIds(context.AllEntries.Select(x => x.ProductId).ToArray());
             var commissionFees = await _searchService.SearchAsync(new SearchCommissionFeesQuery { Type = CommissionFeeType.Dynamic, IsActive = true });
             var dynamicCommissionFees = commissionFees.Results.OfType<DynamicCommissionFee>().ToList();
-            var sellerCommissionsMap = await _commissionFeeResolver.ResolveBySellerIds(context.AllEntries.Select(x => x.SellerId).Distinct().ToArray());
+            var sellerIds = productIdSellerMap.Values.Select(x => x.Id).Distinct().ToList();
+            var sellerCommissionsMap = await _commissionFeeResolver.ResolveBySellerIds(sellerIds);
 
             foreach (var entry in context.AllEntries)
             {
                 var resultEntry = entry.Clone() as EntryFee;
                 var seller = productIdSellerMap[entry.ProductId];
                 resultEntry.SellerId = seller?.Id;
-                if (!string.IsNullOrEmpty(resultEntry.SellerId))
+                if (!string.IsNullOrEmpty(resultEntry.SellerId) && sellerCommissionsMap.ContainsKey(resultEntry.SellerId))
                 {
                     resultEntry.CommissionFee = sellerCommissionsMap[resultEntry.SellerId];
                 }

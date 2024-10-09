@@ -6,6 +6,6 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Core.Services
 {
     public interface ICommissionFeeResolver
     {
-        Task<IDictionary<string, CommissionFee>> ResolveBySellerIds(string[] sellerIds);
+        Task<IDictionary<string, CommissionFee>> ResolveBySellerIds(IList<string> sellerIds);
     }
 }

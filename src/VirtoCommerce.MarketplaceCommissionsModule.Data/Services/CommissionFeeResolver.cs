@@ -19,7 +19,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Services
             _sellerCommissionCrudService = sellerCommissionCrudService;
             _commissionFeeService = commissionFeeService;
         }
-        public virtual async Task<IDictionary<string, CommissionFee>> ResolveBySellerIds(string[] sellerIds)
+        public virtual async Task<IDictionary<string, CommissionFee>> ResolveBySellerIds(IList<string> sellerIds)
         {
             var result = new Dictionary<string, CommissionFee>();
 

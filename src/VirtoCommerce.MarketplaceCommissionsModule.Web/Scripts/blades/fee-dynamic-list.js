@@ -85,8 +85,8 @@ angular.module('virtoCommerce.marketplaceCommissionsModule')
             function deleteList(selection, single) {
                 var dialog = {
                     id: "confirmDeleteDynamicFee",
-                    title: single ? "marketplace-commissions.dialogs.fee-dynamic-delete.title" : "marketplace.dialogs.fee-dynamic-list-delete.title",
-                    message: single ? "marketplace-commissions.dialogs.fee-dynamic-delete.message" : "marketplace.dialogs.fee-dynamic-list-delete.message",
+                    title: single ? "marketplace-commissions.dialogs.fee-dynamic-delete.title" : "marketplace-commissions.dialogs.fee-dynamic-list-delete.title",
+                    message: single ? "marketplace-commissions.dialogs.fee-dynamic-delete.message" : "marketplace-commissions.dialogs.fee-dynamic-list-delete.message",
                     callback: function (remove) {
                         if (remove) {
                             commissionsApi.deleteFee({ ids: selection.map(item => item.id) }, function () {

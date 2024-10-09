@@ -8,10 +8,10 @@
                     rowHeight: 61,
                     columnDefs: [
                                 { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
-                                { name: 'name', displayName: 'marketplace.blades.fee-dynamic-list.labels.name' },
-                                { name: 'isActive', displayName: 'marketplace.blades.fee-dynamic-list.labels.state', cellTemplate: 'active.cell.html' },
-                                { name: 'fee', displayName: 'marketplace.blades.fee-dynamic-list.labels.fee-amount' },
-                                { name: 'calculationType', displayName: 'marketplace.blades.fee-dynamic-list.labels.calculation-type', cellTemplate: 'calculation-type.cell.html' }
+                                { name: 'name', displayName: 'marketplace-commissions.blades.fee-dynamic-list.labels.name' },
+                                { name: 'isActive', displayName: 'marketplace-commissions.blades.fee-dynamic-list.labels.state', cellTemplate: 'active.cell.html' },
+                                { name: 'fee', displayName: 'marketplace-commissions.blades.fee-dynamic-list.labels.fee-amount' },
+                                { name: 'calculationType', displayName: 'marketplace-commissions.blades.fee-dynamic-list.labels.calculation-type', cellTemplate: 'calculation-type.cell.html' }
                                 ]
                 })">
             <div class="note" ng-if="!listEntries.length">{{ 'platform.list.no-data' | translate }}</div>

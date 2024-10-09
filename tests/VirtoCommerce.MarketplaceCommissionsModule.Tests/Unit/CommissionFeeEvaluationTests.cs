@@ -44,7 +44,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
             };
 
             _sellerByProductIdResolver.Setup(a => a.ResolveByProductIds(It.IsAny<string[]>())).ReturnsAsync(new Dictionary<string, VCMP.Seller> { { lineItem.ProductId, seller } });
-            _commissionFeeResolver.Setup(a => a.ResolveBySellerIds(It.IsAny<string[]>())).ReturnsAsync(new Dictionary<string, CommissionFee> { { lineItem.VendorId, commissionFee } });
+            _commissionFeeResolver.Setup(a => a.ResolveBySellerIds(It.IsAny<IList<string>>())).ReturnsAsync(new Dictionary<string, CommissionFee> { { lineItem.VendorId, commissionFee } });
             _searchService.Setup(a => a.SearchAsync(It.IsAny<SearchCommissionFeesQuery>(), It.IsAny<bool>())).ReturnsAsync(dynamicCommissionFees);
             _sellerCommissionCrudService.Setup(a => a.GetSellersCommissions(It.IsAny<IList<string>>())).ReturnsAsync([sellerCommission]);
             var sut = new CommissionFeeEvaluator(_searchService.Object, _sellerCommissionCrudService.Object, _sellerByProductIdResolver.Object, _commissionFeeResolver.Object, _loggerMock.Object);

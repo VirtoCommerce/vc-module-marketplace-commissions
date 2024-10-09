@@ -29,11 +29,13 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.IntegrationEventHandle
         public virtual async Task Handle(SellerOrderCreatedIntegrationEvent message)
         {
             var order = await _customerOrderService.GetByIdAsync(message.SellerOrderId);
-
-            await _commissionFeeEvaluator.EvalAndApplyFees(order, _categoryService);
-            using (EventSuppressor.SuppressEvents())
+            if (order != null)
             {
-                await _customerOrderService.SaveChangesAsync([order]);
+                await _commissionFeeEvaluator.EvalAndApplyFees(order, _categoryService);
+                using (EventSuppressor.SuppressEvents())
+                {
+                    await _customerOrderService.SaveChangesAsync([order]);
+                }
             }
         }
     }
