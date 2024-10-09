@@ -62,6 +62,7 @@ public class Module : IModule, IHasConfiguration
 
         serviceCollection.AddTransient<CustomerOrderCreatedEventHandler>();
         serviceCollection.AddTransient<SellerOrderCreatedIntegrationEventHandler>();
+        serviceCollection.AddTransient<SellerCreatedIntegrationEventHandler>();
 
         serviceCollection.AddMediatR(typeof(Data.Anchor));
 
@@ -82,6 +83,7 @@ public class Module : IModule, IHasConfiguration
 
         appBuilder.RegisterEventHandler<OrderChangedEvent, CustomerOrderCreatedEventHandler>();
         appBuilder.RegisterEventHandler<SellerOrderCreatedIntegrationEvent, SellerOrderCreatedIntegrationEventHandler>();
+        appBuilder.RegisterEventHandler<SellerCreatedIntegrationEvent, SellerCreatedIntegrationEventHandler>();
 
         // Register condition trees expressions into the AbstractFactory<IConditionTree>
         foreach (var conditionTree in AbstractTypeFactory<DynamicCommissionFeeTreePrototype>.TryCreateInstance().Traverse<IConditionTree>(x => x.AvailableChildren))
