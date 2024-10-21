@@ -14,7 +14,7 @@
     <None Remove="vc-shell-commissions\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.MarketplaceVendorModule.Core" Version="3.822.0-alpha.804" />
+    <PackageReference Include="VirtoCommerce.MarketplaceVendorModule.Core" Version="3.824.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketplaceCommissionsModule.Core\VirtoCommerce.MarketplaceCommissionsModule.Core.csproj" />

@@ -6,7 +6,7 @@
 
   <platformVersion>3.825.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.MarketplaceVendor" version="3.814.0" />
+    <dependency id="VirtoCommerce.MarketplaceVendor" version="3.824.0" />
   </dependencies>
 
   <title>VirtoCommerce MarketplaceCommissions extension module.</title>
@@ -19,7 +19,7 @@
     <owner>VirtoCommerce</owner>
   </owners>
 
-  <projectUrl>https://github.com/VirtoCommerce/vc-module-marketplace-commissions-module</projectUrl>
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-marketplace-commissions</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.MarketplaceCommissions)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
 
