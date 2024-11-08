@@ -33,7 +33,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Web.Controllers.Api
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, query, new SellerAuthorizationRequirement(ModuleConstants.Security.Permissions.SellerResources));
             if (!authorizationResult.Succeeded)
             {
-                return Unauthorized();
+                return Forbid();
             }
             var result = await _mediator.Send(query);
 
@@ -47,7 +47,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Web.Controllers.Api
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, command, new SellerAuthorizationRequirement(ModuleConstants.Security.Permissions.SellerResources));
             if (!authorizationResult.Succeeded)
             {
-                return Unauthorized();
+                return Forbid();
             }
             var result = await _mediator.Send(command);
 
