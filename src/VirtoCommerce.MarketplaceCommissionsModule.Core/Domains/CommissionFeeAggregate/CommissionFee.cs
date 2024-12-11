@@ -30,6 +30,8 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Core.Domains
                 throw new ArgumentNullException(nameof(commissionFee));
             }
 
+            var oldValue = Clone() as CommissionFee;
+
             Name = commissionFee.Name;
             Description = commissionFee.Description;
             Type = commissionFee.Type;
@@ -37,7 +39,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Core.Domains
             Fee = commissionFee.Fee;
             Priority = commissionFee.Priority;
 
-            AddDomainEvent(new CommissionFeeUpdatedEvent { CommissionFee = Clone() as CommissionFee });
+            AddDomainEvent(new CommissionFeeUpdatedEvent { CommissionFee = Clone() as CommissionFee, OldValue = oldValue });
         }
 
         public static CommissionFee CreateNew(CommissionFeeDetails commissionFee)
