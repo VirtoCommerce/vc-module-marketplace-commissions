@@ -11,8 +11,8 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.SqlServer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             var createCommissionFeeTableScript = @"
-                IF OBJECT_ID(N'dbo.CommissionFeeTST', N'U') IS NULL
-                    CREATE TABLE CommissionFeeTST (
+                IF OBJECT_ID(N'dbo.CommissionFee', N'U') IS NULL
+                    CREATE TABLE CommissionFee (
                               Id nvarchar(128) NOT NULL PRIMARY KEY,
                               Name nvarchar(256) NULL,
                               Description nvarchar(max) NULL,
