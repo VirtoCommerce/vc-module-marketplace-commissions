@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Services;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
@@ -16,7 +15,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
             _sellerCommissionCrudService = sellerCommissionCrudService;
         }
 
-        public virtual async Task<Unit> Handle(UpdateSellerCommissionCommand request, CancellationToken cancellationToken)
+        public virtual async Task Handle(UpdateSellerCommissionCommand request, CancellationToken cancellationToken)
         {
             if (!string.IsNullOrEmpty(request.SellerId))
             {
@@ -30,9 +29,6 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
 
                 await _sellerCommissionCrudService.SaveChangesAsync([sellerCommission]);
             }
-
-
-            return Unit.Value;
         }
     }
 }

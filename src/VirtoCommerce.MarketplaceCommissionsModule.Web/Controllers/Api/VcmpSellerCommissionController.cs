@@ -49,9 +49,9 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Web.Controllers.Api
             {
                 return Forbid();
             }
-            var result = await _mediator.Send(command);
+            await _mediator.Send(command);
 
-            return Ok(result);
+            return Ok();
         }
     }
 }

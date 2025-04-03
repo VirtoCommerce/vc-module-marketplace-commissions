@@ -1,5 +1,4 @@
 using System;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,7 @@ using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.MarketplaceCommissionsModule.Core;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Services;
+using VirtoCommerce.MarketplaceCommissionsModule.Data;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.IntegrationEventHandlers;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.MySql;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.PostgreSql;
@@ -64,7 +64,7 @@ public class Module : IModule, IHasConfiguration
         serviceCollection.AddTransient<SellerOrderCreatedIntegrationEventHandler>();
         serviceCollection.AddTransient<SellerCreatedIntegrationEventHandler>();
 
-        serviceCollection.AddMediatR(typeof(Data.Anchor));
+        serviceCollection.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Anchor>());
 
         //TODO: realize virto export
     }
