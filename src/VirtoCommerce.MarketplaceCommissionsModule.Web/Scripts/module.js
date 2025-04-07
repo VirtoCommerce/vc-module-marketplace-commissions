@@ -33,7 +33,7 @@ angular.module(moduleName, [])
             // Register fees in main menu
             var menuItem = {
                 path: 'browse/fees',
-                icon: 'fa fa-usd',
+                icon: 'fas fa-percent',
                 title: 'marketplace-commissions.main-menu.fees',
                 priority: 35,
                 action: function () { $state.go('workspace.commissions'); },
