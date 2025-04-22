@@ -1,4 +1,4 @@
-# v3.200.30
+# v3.800.12
 name: Module CI
 
 on:
@@ -32,7 +32,7 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' &&
         (github.event.pull_request.head.repo.full_name == github.repository ||
         github.event.pull_request.head.repo.full_name == '') }}  # Check that PR not from forked repo and not from Dependabot
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     env:
       CLOUD_INSTANCE_BASE_URL: ${{secrets.CLOUD_INSTANCE_BASE_URL}}
       CLIENT_ID: ${{secrets.CLIENT_ID}}
@@ -184,7 +184,7 @@ jobs:
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master') || (github.ref == 'refs/heads/dev') }}
     needs: ci
-    uses: VirtoCommerce/.github/.github/workflows/deploy-cloud.yml@v3.200.35
+    uses: VirtoCommerce/.github/.github/workflows/deploy-cloud.yml@v3.800.12
     with:
       releaseSource: module
       moduleId: ${{ needs.ci.outputs.moduleId }}
