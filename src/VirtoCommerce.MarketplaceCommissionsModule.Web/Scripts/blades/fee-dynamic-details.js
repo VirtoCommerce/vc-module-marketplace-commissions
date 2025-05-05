@@ -117,17 +117,12 @@ angular.module('virtoCommerce.marketplaceCommissionsModule')
             };
 
             $scope.validatePriorityAsync = function (value) {
-                if (value > 0) {
-                    if (Number.isInteger(value)) {
-                        $scope.errorData = null;
-                        return $q.resolve();
-                    }
-                    else {
-                        $scope.errorData = 'PriorityNotInteger';
-                        return $q.reject();
-                    }
-                } else {
-                    $scope.errorData = 'PriorityNotPositive';
+                if (Number.isInteger(value)) {
+                    $scope.errorData = null;
+                    return $q.resolve();
+                }
+                else {
+                    $scope.errorData = 'PriorityNotInteger';
                     return $q.reject();
                 }
             };
