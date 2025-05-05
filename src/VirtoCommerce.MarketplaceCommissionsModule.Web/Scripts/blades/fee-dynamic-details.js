@@ -203,17 +203,30 @@ angular.module('virtoCommerce.marketplaceCommissionsModule')
             };
 
             function fillIncludingCategoriesBlock(filteredCategories) {
-                if (filteredCategories) {
-                    let commonConditionBlock = blade.currentEntity.expressionTree.children.filter(x => x.id === 'BlockCommissionCondition').find(o => true);
-                    let categoryIsConditionBlock = commonConditionBlock && commonConditionBlock.children
-                        ? commonConditionBlock.children.filter(x => x.id === 'VcmpConditionCategoryIs').find(o => true)
-                        : undefined;
-                    if (categoryIsConditionBlock && filteredCategories.length > 0) {
-                        categoryIsConditionBlock.categoryId = filteredCategories[0].id;
-                        categoryIsConditionBlock.categoryName = filteredCategories[0].name;
-                    }
+                if (!filteredCategories) {
+                    return;
                 }
-            };
+
+                const blockCondition = blade.currentEntity.expressionTree.children
+                    .find(x => x.id === 'BlockCommissionCondition');
+
+                if (blockCondition && Array.isArray(blockCondition.children)) {
+                    blockCondition.children
+                        .filter(x =>
+                            x.id === 'VcmpConditionCategoryIs' &&
+                            Array.isArray(x.includingCategories) &&
+                            x.includingCategories.length === 1
+                        )
+                        .forEach(categoryIsCond => {
+                            const categoryId = categoryIsCond.includingCategories[0];
+                            const category = filteredCategories.find(f => f.id === categoryId);
+                            if (category) {
+                                categoryIsCond.categoryId = category.id;
+                                categoryIsCond.categoryName = category.name;
+                            }
+                        });
+                }
+            }
 
             function fillExcludingCategoriesBlock(filteredCategories) {
                 if (filteredCategories) {
@@ -253,15 +266,24 @@ angular.module('virtoCommerce.marketplaceCommissionsModule')
             };
 
             function fillProductsBlock(filteredProducts) {
-                if (filteredProducts) {
-                    let commonConditionBlock = blade.currentEntity.expressionTree.children.filter(x => x.id === 'BlockCommissionCondition').find(o => true);
-                    let productIsConditionBlock = commonConditionBlock && commonConditionBlock.children
-                        ? commonConditionBlock.children.filter(x => x.id === 'VcmpConditionProductIs').find(o => true)
-                        : undefined;
-                    if (productIsConditionBlock) {
-                        productIsConditionBlock.productNames = filteredProducts.map(x => x.name);
-                        productIsConditionBlock.productCodes = filteredProducts.map(x => x.code);
-                    }
+                if (!filteredProducts) {
+                    return;
+                } 
+
+                const blockCondition = blade.currentEntity.expressionTree.children
+                    .find(x => x.id === 'BlockCommissionCondition');
+
+                if (blockCondition && Array.isArray(blockCondition.children)) {
+                    blockCondition.children
+                        .filter(x => x.id === 'VcmpConditionProductIs' && Array.isArray(x.includingProducts) && x.includingProducts.length === 1)
+                        .forEach(productIsCond => {
+                            const productId = productIsCond.includingProducts[0];
+                            const product = filteredProducts.find(f => f.id === productId);
+                            if (product) {
+                                productIsCond.productNames = [product.name];
+                                productIsCond.productCodes = [product.code];
+                            }
+                        });
                 }
             };
 
