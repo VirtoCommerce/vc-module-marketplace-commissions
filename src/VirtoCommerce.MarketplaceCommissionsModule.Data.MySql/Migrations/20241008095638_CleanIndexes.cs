@@ -10,13 +10,13 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.MySql.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Seller_CommissionFee_CommissionFeeId",
-                table: "Seller");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_Seller_CommissionFee_CommissionFeeId",
+            //    table: "Seller");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Seller_CommissionFeeId",
-                table: "Seller");
+            //migrationBuilder.DropIndex(
+            //    name: "IX_Seller_CommissionFeeId",
+            //    table: "Seller");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_SellerCommission_Seller_SellerId",
