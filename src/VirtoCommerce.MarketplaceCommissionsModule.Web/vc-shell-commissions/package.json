@@ -14,15 +14,15 @@
   ],
   "devDependencies": {
     "@types/lodash-es": "^4.17.6",
-    "@vc-shell/api-client-generator": "^1.1.49",
-    "@vc-shell/config-generator": "^1.1.49",
-    "@vc-shell/ts-config": "^1.1.49",
+    "@vc-shell/api-client-generator": "^1.1.52",
+    "@vc-shell/config-generator": "^1.1.52",
+    "@vc-shell/ts-config": "^1.1.52",
     "cross-env": "^7.0.3",
     "lodash-es": "^4.17.21",
     "vite": "^6.3.3"
   },
   "dependencies": {
-    "@vc-shell/framework": "^1.1.49",
+    "@vc-shell/framework": "^1.1.52",
     "@vcmp-marketplace-commissions/api": "^1.0.0",
     "vue": "^3.5.13",
     "vue-router": "^4.2.5"
