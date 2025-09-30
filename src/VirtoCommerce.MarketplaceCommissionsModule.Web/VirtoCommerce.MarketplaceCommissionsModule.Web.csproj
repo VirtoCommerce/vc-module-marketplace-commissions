@@ -8,10 +8,10 @@
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="vc-shell-commissions\**" />
-    <Content Remove="vc-shell-commissions\**" />
-    <EmbeddedResource Remove="vc-shell-commissions\**" />
-    <None Remove="vc-shell-commissions\**" />
+    <Compile Remove="commissions-app\**" />
+    <Content Remove="commissions-app\**" />
+    <EmbeddedResource Remove="commissions-app\**" />
+    <None Remove="commissions-app\**" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.MarketplaceCommissionsModule.Core\VirtoCommerce.MarketplaceCommissionsModule.Core.csproj" />
@@ -21,7 +21,7 @@
     <ProjectReference Include="..\VirtoCommerce.MarketplaceCommissionsModule.Data\VirtoCommerce.MarketplaceCommissionsModule.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <CommissionsApp Include="vc-shell-commissions\dist\**" />
+    <CommissionsApp Include="commissions-app\dist\**" />
   </ItemGroup>
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(CommissionsApp)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
