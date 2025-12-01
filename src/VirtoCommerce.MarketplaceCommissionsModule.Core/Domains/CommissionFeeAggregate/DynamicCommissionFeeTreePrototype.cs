@@ -6,13 +6,13 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Core.Domains
     {
         public DynamicCommissionFeeTreePrototype()
         {
-            WithAvailConditions(new VendorCommissionCondition()
-                .WithAvailConditions(
+            WithAvailableChildren(new VendorCommissionCondition()
+                .WithAvailableChildren(
                     new VcmpConditionVendorIs(),
                     new UserGroupsContainsCondition()
                 ),
                 new BlockCommissionCondition()
-                .WithAvailConditions(
+                .WithAvailableChildren(
                     new VcmpConditionCategoryIs(),
                     new VcmpConditionProductIs()
                 )
