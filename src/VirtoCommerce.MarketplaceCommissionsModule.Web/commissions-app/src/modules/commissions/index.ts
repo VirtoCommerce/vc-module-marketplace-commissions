@@ -1,5 +1,5 @@
 import * as locales from "./locales";
-import { i18n, useExtensionSlot } from "@vc-shell/framework";
+import { i18n, useExtensionPoint } from "@vc-shell/framework";
 import { Router } from "vue-router";
 import { App } from "vue";
 import { CommissionsFeeField } from "./components";
@@ -13,9 +13,9 @@ export default {
       });
     }
 
-    const { addComponent } = useExtensionSlot("commissions-fee");
+    const { add } = useExtensionPoint("seller:commissions");
 
-    addComponent({
+    add({
       id: "commissions-fee",
       component: CommissionsFeeField,
     });
