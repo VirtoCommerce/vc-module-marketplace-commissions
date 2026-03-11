@@ -31,7 +31,7 @@
   <tags>Marketplace Commissions module</tags>
   <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
   <frontendModules>
-    <frontendModule id="commissions-app" path="commissions-app/dist">
+    <frontendModule id="commissions" path="commissions-app/dist">
       <compatibleWith>
         <dependency id="@vc-shell/framework">[2.0.0,3.0.0)</dependency>
       </compatibleWith>
