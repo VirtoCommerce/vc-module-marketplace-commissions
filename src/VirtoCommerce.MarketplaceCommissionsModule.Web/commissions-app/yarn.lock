@@ -3356,7 +3356,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/api-client-generator@npm:^v2.0.0-alpha.28":
+"@vc-shell/api-client-generator@npm:^2.0.0-alpha.28":
   version: 2.0.0-alpha.28
   resolution: "@vc-shell/api-client-generator@npm:2.0.0-alpha.28"
   dependencies:
@@ -3372,7 +3372,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/config-generator@npm:^v2.0.0-alpha.28":
+"@vc-shell/config-generator@npm:^2.0.0-alpha.28":
   version: 2.0.0-alpha.28
   resolution: "@vc-shell/config-generator@npm:2.0.0-alpha.28"
   dependencies:
@@ -3388,7 +3388,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/framework@npm:^v2.0.0-alpha.28":
+"@vc-shell/framework@npm:^2.0.0-alpha.28":
   version: 2.0.0-alpha.28
   resolution: "@vc-shell/framework@npm:2.0.0-alpha.28"
   dependencies:
@@ -3464,7 +3464,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/mf-module@npm:^v2.0.0-alpha.28":
+"@vc-shell/mf-module@npm:^2.0.0-alpha.28":
   version: 2.0.0-alpha.28
   resolution: "@vc-shell/mf-module@npm:2.0.0-alpha.28"
   dependencies:
@@ -3478,7 +3478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vc-shell/ts-config@npm:^v2.0.0-alpha.28":
+"@vc-shell/ts-config@npm:v2.0.0-alpha.28":
   version: 2.0.0-alpha.28
   resolution: "@vc-shell/ts-config@npm:2.0.0-alpha.28"
   checksum: 3b10a71ab0c1532df796e42cd0c9d850082ee3eec8a1a6e49aeb7935b805755eb5c214a333752b46bddc78b45a23e3f8d7c6f89ff4814cba53ed833b09b351a0
@@ -4784,11 +4784,11 @@ __metadata:
     "@types/node": "npm:^20.10.5"
     "@typescript-eslint/eslint-plugin": "npm:^6.16.0"
     "@typescript-eslint/parser": "npm:^6.16.0"
-    "@vc-shell/api-client-generator": "npm:^v2.0.0-alpha.28"
-    "@vc-shell/config-generator": "npm:^v2.0.0-alpha.28"
-    "@vc-shell/framework": "npm:^v2.0.0-alpha.28"
-    "@vc-shell/mf-module": "npm:^v2.0.0-alpha.28"
-    "@vc-shell/ts-config": "npm:^v2.0.0-alpha.28"
+    "@vc-shell/api-client-generator": "npm:^2.0.0-alpha.28"
+    "@vc-shell/config-generator": "npm:^2.0.0-alpha.28"
+    "@vc-shell/framework": "npm:^2.0.0-alpha.28"
+    "@vc-shell/mf-module": "npm:^2.0.0-alpha.28"
+    "@vc-shell/ts-config": "npm:v2.0.0-alpha.28"
     "@vcmp-marketplace-commissions/api": "npm:1.0.0"
     "@vitejs/plugin-vue": "npm:^5.2.3"
     "@vue/eslint-config-prettier": "npm:^9.0.0"
