@@ -6,7 +6,7 @@
 
   <platformVersion>3.897.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.MarketplaceVendor" version="3.830.0-alpha.924" />
+    <dependency id="VirtoCommerce.MarketplaceVendor" version="3.830.0" />
   </dependencies>
 
   <title>VirtoCommerce MarketplaceCommissions extension module.</title>
@@ -27,7 +27,7 @@
   <moduleType>VirtoCommerce.MarketplaceCommissionsModule.Web.Module, VirtoCommerce.MarketplaceCommissionsModule.Web</moduleType>
 
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2024-2025 VirtoCommerce. All rights reserved</copyright>
+  <copyright>Copyright © 2024-2026 VirtoCommerce. All rights reserved</copyright>
   <tags>Marketplace Commissions module</tags>
   <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
   <frontendModules>
