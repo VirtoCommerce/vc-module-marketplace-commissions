@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Models;
 using VirtoCommerce.Platform.Data.Infrastructure;
@@ -18,6 +20,23 @@ public class CommissionFeeDbContext : DbContextBase
     protected CommissionFeeDbContext(DbContextOptions options)
         : base(options)
     {
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        // EF Core 9 introduced PendingModelChangesWarning which throws when migrations
+        // were generated with an older EF Core version. Use reflection to get the EventId
+        // since this module is compiled against EF Core 8.
+        var pendingField = typeof(RelationalEventId)
+            .GetField("PendingModelChangesWarning", BindingFlags.Public | BindingFlags.Static);
+
+        if (pendingField != null)
+        {
+            var eventId = (EventId)pendingField.GetValue(null);
+            optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(eventId));
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
