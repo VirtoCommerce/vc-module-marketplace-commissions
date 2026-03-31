@@ -21,12 +21,12 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
             var fee = await mediator.Send(new CreateFeeCommand
             {
                 FeeDetails = new CommissionFeeDetails { IsDefault = true }
-            });
+            }, TestContext.Current.CancellationToken);
 
             await mediator.Send(new CreateFeeCommand
             {
                 FeeDetails = new CommissionFeeDetails { IsDefault = true }
-            });
+            }, TestContext.Current.CancellationToken);
 
             // Assertion
             fee.IsDefault.Should().BeFalse();
@@ -45,7 +45,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
                 {
                     IsDefault = true
                 }
-            });
+            }, TestContext.Current.CancellationToken);
 
             await mediator.Send(new UpdateFeeCommand
             {
@@ -54,7 +54,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
                     Id = fee.Id,
                     IsDefault = false
                 }
-            });
+            }, TestContext.Current.CancellationToken);
 
             // Assertion
             fee.IsDefault.Should().BeTrue();
@@ -74,9 +74,9 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Functional
                 {
                     IsDefault = false
                 }
-            });
+            }, TestContext.Current.CancellationToken);
 
-            await mediator.Send(new DeleteFeeCommand { Id = fee.Id });
+            await mediator.Send(new DeleteFeeCommand { Id = fee.Id }, TestContext.Current.CancellationToken);
 
             // Assertion
             feeServiceMock.CommissionFees.Count.Should().Be(0);
