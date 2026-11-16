@@ -1,0 +1,17 @@
+{
+  "remote": { "name": "marketplace_commissions_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "marketplace-commissions",
+        "sectionId": "marketplace",
+        "title": "Commissions",
+        "titleKey": "MARKETPLACE_COMMISSIONS.MENU.TITLE",
+        "icon": "lucide-percent",
+        "route": "/marketplace-commissions",
+        "permission": "operator:commissions",
+        "priority": 300
+      }
+    ]
+  }
+}

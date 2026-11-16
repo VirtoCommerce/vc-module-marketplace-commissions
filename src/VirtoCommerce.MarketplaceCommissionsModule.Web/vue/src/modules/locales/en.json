@@ -1,0 +1,103 @@
+{
+  "MARKETPLACE_COMMISSIONS": {
+    "MENU": {
+      "TITLE": "Commissions"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "ADD": "Add",
+      "SAVE": "Save",
+      "CREATE": "Create",
+      "RESET": "Reset",
+      "DELETE": "Delete",
+      "EDIT": "Edit"
+    },
+    "CALCULATION_TYPES": {
+      "Percent": "%",
+      "Fixed": "Fixed"
+    },
+    "FEES": {
+      "TITLE": "Commissions",
+      "SUBTITLE": "Manage your commission calculation rules here",
+      "STATIC": "Static",
+      "DYNAMIC": "Dynamic"
+    },
+    "STATIC_LIST": {
+      "TITLE": "Static commissions",
+      "EMPTY": "No static commissions yet",
+      "NAME": "Name",
+      "DEFAULT": "Default",
+      "FEE": "Amount",
+      "CALCULATION_TYPE": "Calculation type"
+    },
+    "DYNAMIC_LIST": {
+      "TITLE": "Dynamic commissions",
+      "EMPTY": "No dynamic commissions yet",
+      "NAME": "Name",
+      "STATE": "State",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "PRIORITY": "Priority",
+      "FEE": "Amount",
+      "CALCULATION_TYPE": "Calculation type",
+      "DELETE_CONFIRM": "Are you sure you want to delete the selected commissions?"
+    },
+    "DETAILS": {
+      "TITLE_NEW": "New commission",
+      "SUBTITLE": "Configure your commission details",
+      "NAME": "Name",
+      "NAME_PLACEHOLDER": "Enter name",
+      "DESCRIPTION": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Enter description",
+      "DEFAULT": "Default",
+      "SET_DEFAULT": "Set default",
+      "CAN_NOT_REMOVE_DEFAULT": "Unable to remove Default commission",
+      "IS_ACTIVE": "Active",
+      "PRIORITY": "Priority",
+      "PRIORITY_PLACEHOLDER": "Priority",
+      "PRIORITY_HINT": "The commission with the highest priority is applied first",
+      "PRIORITY_NOT_INTEGER": "Priority value should be integer",
+      "FEE": "Fee amount",
+      "FEE_PLACEHOLDER": "Fee amount",
+      "CALCULATION_TYPE": "Calculation type",
+      "CONDITIONS": "Commission fee conditions",
+      "REQUIRED": "This field is required",
+      "CLOSE_CONFIRM": "This commission has been modified. Close without saving?",
+      "DELETE_CONFIRM": "Are you sure you want to delete the commission \"{name}\"?"
+    },
+    "CONDITIONS": {
+      "VENDOR_MATCHING": "Vendor matching",
+      "OF_FOLLOWING_CRITERIA": "of the following criteria",
+      "IF": "If",
+      "OF_CONDITIONS_TRUE": "of these conditions are true",
+      "ALL": "all",
+      "ANY": "any",
+      "ADD_CONDITION": "Add condition",
+      "REMOVE": "Remove",
+      "VENDOR_IS": "Vendor is",
+      "CATEGORY_IS": "Category is",
+      "PRODUCT_IS": "Product is",
+      "EXCLUDING": "excluding",
+      "EXCLUDE_CATEGORIES": "Excluded categories",
+      "EXCLUDE_PRODUCTS": "Excluded products",
+      "SELECT_VENDORS": "Select vendors",
+      "SELECT_CATEGORY": "Select category",
+      "SELECT_PRODUCTS": "Select products",
+      "NAMES": {
+        "VcmpConditionVendorIs": "Vendor is ...",
+        "VcmpConditionCategoryIs": "Category is ...",
+        "VcmpConditionProductIs": "Product is ..."
+      }
+    },
+    "ORDER_FEES": {
+      "TITLE": "Line items commission details",
+      "EMPTY": "No line items",
+      "LINE_ITEM": "Line item",
+      "COMMISSION_NAME": "Commission name",
+      "FEE": "Commission"
+    },
+    "WIDGETS": {
+      "ORDER_FEES": "Commissions"
+    }
+  }
+}
