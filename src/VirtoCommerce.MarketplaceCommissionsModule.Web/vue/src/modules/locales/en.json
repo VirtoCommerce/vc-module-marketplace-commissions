@@ -96,8 +96,16 @@
       "COMMISSION_NAME": "Commission name",
       "FEE": "Commission"
     },
+    "STATIC_FEE_VENDORS": {
+      "TITLE": "Assigned vendors",
+      "EMPTY": "No vendors are assigned to this commission",
+      "NAME": "Vendor",
+      "ASSIGNED": "Assigned",
+      "CANNOT_OPEN_VENDOR": "Vendor details are not available"
+    },
     "WIDGETS": {
-      "ORDER_FEES": "Commissions"
+      "ORDER_FEES": "Commissions",
+      "VENDORS": "Vendors"
     }
   }
 }

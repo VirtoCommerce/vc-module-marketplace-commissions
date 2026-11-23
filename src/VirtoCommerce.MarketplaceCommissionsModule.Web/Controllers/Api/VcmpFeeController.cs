@@ -92,5 +92,17 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Web.Controllers.Api
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Search the vendors assigned to commission fees (by CommissionFeeId, by vendor name in Keyword)
+        /// </summary>
+        [HttpPost]
+        [Route("sellers/search")]
+        public async Task<ActionResult<SearchSellerCommissionsResult>> SearchSellerCommissions([FromBody] SearchSellerCommissionsQuery query)
+        {
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
     }
 }

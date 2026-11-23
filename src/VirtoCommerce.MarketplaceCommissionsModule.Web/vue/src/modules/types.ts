@@ -5,3 +5,9 @@ export type OrderFeesOptions = {
   orderId: string;
   orderNumber?: string;
 };
+
+/** MarketplaceCommissionsStaticFeeVendors: the static commission whose assigned vendors are shown */
+export type StaticFeeVendorsOptions = {
+  commissionFeeId: string;
+  commissionName?: string;
+};

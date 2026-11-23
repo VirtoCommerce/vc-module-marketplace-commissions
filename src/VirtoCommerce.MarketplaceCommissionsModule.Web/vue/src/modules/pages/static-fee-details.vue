@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { useBlade, useBladeForm, usePermissions, usePopup, type IBladeToolbar } from "@vc-shell/framework";
+import { useBlade, useBladeForm, useBladeWidgets, usePermissions, usePopup, type IBladeToolbar } from "@vc-shell/framework";
 import { VcBlade, VcCol, VcContainer, VcForm, VcInput, VcRow, VcSelect, VcSwitch, VcTextarea } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -75,12 +75,13 @@ import {
   FeeCalculationType,
   type CommissionFeeDetails,
 } from "../../api_client/virtocommerce.marketplacecommissions";
+import type { StaticFeeVendorsOptions } from "../types";
 
 // legacy fee-static-details (and fee-static-add for a new one)
 defineBlade({ url: "/static-commission", name: "MarketplaceCommissionsStaticFeeDetails", permissions: ["operator:resources"] });
 
 const { t } = useI18n({ useScope: "global" });
-const { param, callParent, closeSelf } = useBlade();
+const { param, callParent, closeSelf, openBlade } = useBlade();
 const { showConfirmation, showError } = usePopup();
 const { hasAccess } = usePermissions();
 
@@ -108,6 +109,32 @@ async function load() {
   }
   form.setBaseline();
 }
+
+// the vendors assigned to the commission: their count on the widget, the list behind it
+const vendorsCount = ref<number | string>("…");
+
+async function loadVendorsCount() {
+  if (!param.value) return;
+  vendorsCount.value =
+    (await api.fees.searchSellerCommissions({ commissionFeeId: param.value, take: 0 }).catch(() => undefined))?.totalCount ?? 0;
+}
+
+useBladeWidgets([
+  {
+    id: "MarketplaceCommissionsStaticFeeVendors",
+    icon: "lucide-store",
+    title: "MARKETPLACE_COMMISSIONS.WIDGETS.VENDORS",
+    badge: vendorsCount,
+    // a new commission has no vendors yet
+    isVisible: computed(() => !!param.value),
+    onClick: () => {
+      if (!param.value) return;
+      const options: StaticFeeVendorsOptions = { commissionFeeId: param.value, commissionName: original.value.name };
+      openBlade({ name: "MarketplaceCommissionsStaticFeeVendors", options, onClose: loadVendorsCount });
+    },
+    onRefresh: loadVendorsCount,
+  },
+]);
 
 async function save() {
   loading.value = true;
@@ -176,7 +203,10 @@ const toolbar = computed<IBladeToolbar[]>(() => [
   },
 ]);
 
-onMounted(load);
+onMounted(() => {
+  load();
+  loadVendorsCount();
+});
 </script>
 
 <style scoped>
