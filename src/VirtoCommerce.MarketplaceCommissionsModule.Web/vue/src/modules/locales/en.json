@@ -10,7 +10,8 @@
       "CREATE": "Create",
       "RESET": "Reset",
       "DELETE": "Delete",
-      "EDIT": "Edit"
+      "EDIT": "Edit",
+      "CHANGE_COMMISSION": "Change commission"
     },
     "CALCULATION_TYPES": {
       "Percent": "%",
@@ -114,6 +115,21 @@
       "ORDER_FEES": "Commissions",
       "VENDORS": "Vendors",
       "SELLER_COMMISSION": "Commissions"
+    },
+    "BULK_SELLER_COMMISSION": {
+      "TITLE": "Change commission of vendors",
+      "FROM": "Current commission",
+      "VENDORS": "Vendors",
+      "VENDORS_COUNT": "{count} vendor | {count} vendors",
+      "MATCHING": "all matching \"{keyword}\"",
+      "TARGET": "New commission",
+      "NO_TARGETS": "There are no other static commissions. Create one first.",
+      "NOTE": "Orders placed after the change use the new commission. Commissions already calculated for existing orders don't change.",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Move {count} vendor to {name} | Move {count} vendors to {name}",
+      "CONFIRM_DISABLED": "Select a commission",
+      "SUCCESS": "{count} vendor moved to {name} | {count} vendors moved to {name}",
+      "PARTIAL": "{updated} of {count} vendors moved to {name}. The others were changed by another user: refresh the list to see them."
     }
   }
 }
