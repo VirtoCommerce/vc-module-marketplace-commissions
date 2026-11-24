@@ -103,9 +103,17 @@
       "ASSIGNED": "Assigned",
       "CANNOT_OPEN_VENDOR": "Vendor details are not available"
     },
+    "SELLER_COMMISSION": {
+      "TITLE": "Vendor commission",
+      "FEE": "Commission",
+      "FEE_PLACEHOLDER": "Select commission",
+      "MANAGE": "Manage commissions",
+      "CLOSE_CONFIRM": "The vendor commission has been modified. Close without saving?"
+    },
     "WIDGETS": {
       "ORDER_FEES": "Commissions",
-      "VENDORS": "Vendors"
+      "VENDORS": "Vendors",
+      "SELLER_COMMISSION": "Commissions"
     }
   }
 }

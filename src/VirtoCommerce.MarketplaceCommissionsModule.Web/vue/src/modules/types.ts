@@ -11,3 +11,9 @@ export type StaticFeeVendorsOptions = {
   commissionFeeId: string;
   commissionName?: string;
 };
+
+/** MarketplaceCommissionsSellerCommission: the seller whose static commission is chosen */
+export type SellerCommissionOptions = {
+  sellerId: string;
+  sellerName?: string;
+};
