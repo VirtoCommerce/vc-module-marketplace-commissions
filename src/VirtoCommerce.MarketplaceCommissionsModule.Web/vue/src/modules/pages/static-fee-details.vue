@@ -29,7 +29,9 @@
         <!-- the default commission can't be unset: another one is made default instead -->
         <VcSwitch
           v-model="item.isDefault"
+          class="mc-form__default"
           :label="$t(original.isDefault ? 'MARKETPLACE_COMMISSIONS.DETAILS.DEFAULT' : 'MARKETPLACE_COMMISSIONS.DETAILS.SET_DEFAULT')"
+          :label-tooltip="$t('MARKETPLACE_COMMISSIONS.DETAILS.DEFAULT_TOOLTIP')"
           :hint="original.isDefault ? $t('MARKETPLACE_COMMISSIONS.DETAILS.CAN_NOT_REMOVE_DEFAULT') : undefined"
           :disabled="readonly || original.isDefault"
         />
@@ -221,5 +223,10 @@ exposeToChildren({ reloadVendorsCount: loadVendorsCount });
 
 .mc-form__row {
   gap: 16px;
+}
+
+/* a disabled VcSwitch turns off pointer events, which hides the label tooltip on the locked default commission */
+.mc-form__default :deep(.vc-label__tooltip) {
+  pointer-events: auto;
 }
 </style>

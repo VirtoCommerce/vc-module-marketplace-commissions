@@ -53,6 +53,7 @@
       "DEFAULT": "Default",
       "SET_DEFAULT": "Set default",
       "CAN_NOT_REMOVE_DEFAULT": "Unable to remove Default commission",
+      "DEFAULT_TOOLTIP": "The default commission is automatically assigned to new vendors.",
       "IS_ACTIVE": "Active",
       "PRIORITY": "Priority",
       "PRIORITY_PLACEHOLDER": "Priority",
