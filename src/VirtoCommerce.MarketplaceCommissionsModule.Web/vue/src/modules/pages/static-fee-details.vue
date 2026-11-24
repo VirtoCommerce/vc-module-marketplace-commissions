@@ -81,7 +81,7 @@ import type { StaticFeeVendorsOptions } from "../types";
 defineBlade({ url: "/static-commission", name: "MarketplaceCommissionsStaticFeeDetails", permissions: ["operator:resources"] });
 
 const { t } = useI18n({ useScope: "global" });
-const { param, callParent, closeSelf, openBlade } = useBlade();
+const { param, callParent, closeSelf, openBlade, exposeToChildren } = useBlade();
 const { showConfirmation, showError } = usePopup();
 const { hasAccess } = usePermissions();
 
@@ -207,6 +207,9 @@ onMounted(() => {
   load();
   loadVendorsCount();
 });
+
+// the vendors list changes the assignments in bulk
+exposeToChildren({ reloadVendorsCount: loadVendorsCount });
 </script>
 
 <style scoped>

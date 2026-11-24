@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
+using VirtoCommerce.MarketplaceCommissionsModule.Core.Models;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Models.Search;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Commands;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Queries;
@@ -101,6 +102,18 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Web.Controllers.Api
         public async Task<ActionResult<SearchSellerCommissionsResult>> SearchSellerCommissions([FromBody] SearchSellerCommissionsQuery query)
         {
             var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Assign the selected vendors (or all vendors matching Keyword) of one static commission fee to another static commission fee
+        /// </summary>
+        [HttpPost]
+        [Route("sellers/bulk")]
+        public async Task<ActionResult<BulkUpdateSellerCommissionsResult>> BulkUpdateSellerCommissions([FromBody] BulkUpdateSellerCommissionsCommand command)
+        {
+            var result = await _mediator.Send(command);
 
             return Ok(result);
         }
