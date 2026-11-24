@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using Moq;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Models.Search;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Services;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Commands;
+using VirtoCommerce.MarketplaceVendorModule.Core.Domains;
+using VirtoCommerce.MarketplaceVendorModule.Data.Queries;
 using Xunit;
 
 namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
@@ -57,9 +58,28 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
 
             Assert.Equal(2, result.UpdatedCount);
             Assert.Equal(["seller1", "seller3"], context.Saved.Select(x => x.SellerId).Order());
+            Assert.Equal(["Acme"], context.SellerKeywords);
             var query = Assert.Single(context.Queries);
-            Assert.Equal("Acme", query.Keyword);
-            Assert.Null(query.SellerIds);
+            Assert.Equal(["seller1", "seller2", "seller3"], query.SellerIds);
+            Assert.Null(query.Keyword);
+        }
+
+        [Fact]
+        public async Task Handle_AllSellers_KeywordMatchesNoVendor_UpdatesNothing()
+        {
+            var context = new TestContext("seller1");
+
+            var result = await context.Handle(new BulkUpdateSellerCommissionsCommand
+            {
+                CommissionFeeId = SourceFeeId,
+                TargetCommissionFeeId = TargetFeeId,
+                AllSellers = true,
+                Keyword = "nobody",
+            });
+
+            Assert.Equal(0, result.UpdatedCount);
+            Assert.Empty(context.Queries);
+            Assert.Empty(context.SaveBatches);
         }
 
         [Fact]
@@ -76,6 +96,8 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
             });
 
             Assert.Equal(230, result.UpdatedCount);
+            Assert.Empty(context.SellerKeywords);
+            Assert.All(context.Queries, x => Assert.Null(x.SellerIds));
             Assert.Equal([0, 100, 200], context.Queries.Select(x => x.Skip));
             Assert.Equal([50, 50, 50, 50, 30], context.SaveBatches.Select(x => x.Count));
             Assert.True(context.AllPagesReadBeforeFirstSave);
@@ -120,11 +142,13 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
         private sealed class TestContext
         {
             private readonly List<SellerCommission> _assignments;
-            private readonly Mock<IMediator> _mediator = new();
             private readonly Mock<ICommissionFeeService> _feeService = new();
+            private readonly Mock<ISellerCommissionSearchService> _searchService = new();
             private readonly Mock<ISellerCommissionCrudService> _crudService = new();
+            private readonly Mock<ISellersSearchService> _sellersSearchService = new();
 
             public List<SearchSellerCommissionsQuery> Queries { get; } = [];
+            public List<string> SellerKeywords { get; } = [];
             public List<IList<SellerCommission>> SaveBatches { get; } = [];
             public IEnumerable<SellerCommission> Saved => SaveBatches.SelectMany(x => x);
             public bool AllPagesReadBeforeFirstSave { get; private set; } = true;
@@ -133,11 +157,11 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
             {
                 _assignments = sellerIds.Select(x => new SellerCommission { Id = $"sc-{x}", SellerId = x, CommissionFeeId = SourceFeeId }).ToList();
 
-                _mediator
-                    .Setup(x => x.Send(It.IsAny<SearchSellerCommissionsQuery>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync((SearchSellerCommissionsQuery q, CancellationToken _) =>
+                _searchService
+                    .Setup(x => x.SearchAsync(It.IsAny<SearchSellerCommissionsQuery>(), It.IsAny<bool>()))
+                    .ReturnsAsync((SearchSellerCommissionsQuery q, bool _) =>
                     {
-                        // a copy: the handler moves Skip on the same query object
+                        // a copy: SearchAllAsync moves Skip on the same criteria object
                         Queries.Add(new SearchSellerCommissionsQuery { CommissionFeeId = q.CommissionFeeId, SellerIds = q.SellerIds, Keyword = q.Keyword, Skip = q.Skip, Take = q.Take });
                         if (SaveBatches.Count > 0)
                         {
@@ -146,6 +170,20 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
 
                         var matching = _assignments.Where(a => a.CommissionFeeId == q.CommissionFeeId && (q.SellerIds == null || q.SellerIds.Contains(a.SellerId))).ToList();
                         return new SearchSellerCommissionsResult { TotalCount = matching.Count, Results = matching.Skip(q.Skip).Take(q.Take).ToList() };
+                    });
+
+                // the keyword "Acme" matches every vendor, any other keyword matches none
+                _sellersSearchService
+                    .Setup(x => x.SearchAsync(It.IsAny<SearchSellersQuery>(), It.IsAny<bool>()))
+                    .ReturnsAsync((SearchSellersQuery q, bool _) =>
+                    {
+                        if (q.Skip == 0)
+                        {
+                            SellerKeywords.Add(q.Keyword);
+                        }
+
+                        var matching = q.Keyword == "Acme" ? sellerIds.Select(x => new Seller { Id = x }).ToList() : [];
+                        return new SearchSellersResult { TotalCount = matching.Count, Results = matching.Skip(q.Skip).Take(q.Take).ToList() };
                     });
 
                 var fees = new Dictionary<string, CommissionFee>
@@ -166,7 +204,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Tests.Unit
 
             public Task<Core.Models.BulkUpdateSellerCommissionsResult> Handle(BulkUpdateSellerCommissionsCommand command)
             {
-                return new BulkUpdateSellerCommissionsCommandHandler(_mediator.Object, _feeService.Object, _crudService.Object).Handle(command, CancellationToken.None);
+                return new BulkUpdateSellerCommissionsCommandHandler(_feeService.Object, _searchService.Object, _crudService.Object, _sellersSearchService.Object).Handle(command, CancellationToken.None);
             }
         }
     }

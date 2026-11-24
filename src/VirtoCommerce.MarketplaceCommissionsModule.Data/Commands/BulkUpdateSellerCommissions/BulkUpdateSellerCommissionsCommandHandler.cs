@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MediatR;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Domains;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Models;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Models.Search;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Services;
 using VirtoCommerce.MarketplaceVendorModule.Core.Common;
+using VirtoCommerce.MarketplaceVendorModule.Data.Queries;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
@@ -18,15 +18,21 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
         protected virtual int SearchPageSize => 100;
         protected virtual int SaveBatchSize => 50;
 
-        private readonly IMediator _mediator;
         private readonly ICommissionFeeService _commissionFeeService;
+        private readonly ISellerCommissionSearchService _sellerCommissionSearchService;
         private readonly ISellerCommissionCrudService _sellerCommissionCrudService;
+        private readonly ISellersSearchService _sellersSearchService;
 
-        public BulkUpdateSellerCommissionsCommandHandler(IMediator mediator, ICommissionFeeService commissionFeeService, ISellerCommissionCrudService sellerCommissionCrudService)
+        public BulkUpdateSellerCommissionsCommandHandler(
+            ICommissionFeeService commissionFeeService,
+            ISellerCommissionSearchService sellerCommissionSearchService,
+            ISellerCommissionCrudService sellerCommissionCrudService,
+            ISellersSearchService sellersSearchService)
         {
-            _mediator = mediator;
             _commissionFeeService = commissionFeeService;
+            _sellerCommissionSearchService = sellerCommissionSearchService;
             _sellerCommissionCrudService = sellerCommissionCrudService;
+            _sellersSearchService = sellersSearchService;
         }
 
         public virtual async Task<BulkUpdateSellerCommissionsResult> Handle(BulkUpdateSellerCommissionsCommand request, CancellationToken cancellationToken)
@@ -35,7 +41,7 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
 
             var result = ExType<BulkUpdateSellerCommissionsResult>.New();
 
-            var sellerCommissions = await FindSellerCommissionsAsync(request, cancellationToken);
+            var sellerCommissions = await FindSellerCommissionsAsync(request);
             if (!request.ExcludedSellerIds.IsNullOrEmpty())
             {
                 var excluded = request.ExcludedSellerIds.ToHashSet();
@@ -86,32 +92,43 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Commands
         /// The assignments to the current commission fee: the selected vendors, or all vendors matching the keyword.
         /// All pages are read before any change, since the changes take the assignments out of the search.
         /// </summary>
-        protected virtual async Task<IList<SellerCommission>> FindSellerCommissionsAsync(BulkUpdateSellerCommissionsCommand request, CancellationToken cancellationToken)
+        protected virtual async Task<IList<SellerCommission>> FindSellerCommissionsAsync(BulkUpdateSellerCommissionsCommand request)
         {
-            var result = new List<SellerCommission>();
-
             if (!request.AllSellers && request.SellerIds.IsNullOrEmpty())
             {
-                return result;
+                return [];
             }
 
-            var query = ExType<SearchSellerCommissionsQuery>.New();
-            query.CommissionFeeId = request.CommissionFeeId;
-            query.SellerIds = request.AllSellers ? null : request.SellerIds;
-            query.Keyword = request.AllSellers ? request.Keyword : null;
-            query.Take = SearchPageSize;
-
-            int totalCount;
-            do
+            var sellerIds = request.AllSellers ? await FindSellerIdsAsync(request.Keyword) : request.SellerIds;
+            if (sellerIds is { Count: 0 })
             {
-                var page = await _mediator.Send(query, cancellationToken);
-                result.AddRange(page.Results);
-                totalCount = page.TotalCount;
-                query.Skip += SearchPageSize;
+                return [];
             }
-            while (query.Skip < totalCount);
 
-            return result;
+            var criteria = ExType<SearchSellerCommissionsQuery>.New();
+            criteria.CommissionFeeId = request.CommissionFeeId;
+            criteria.SellerIds = sellerIds;
+            criteria.Take = SearchPageSize;
+
+            return await _sellerCommissionSearchService.SearchAllAsync(criteria);
+        }
+
+        /// <summary>
+        /// The vendors whose names match the keyword, as SearchSellerCommissionsQueryHandler finds them.
+        /// Returns null when there is no keyword, which means all vendors.
+        /// </summary>
+        protected virtual async Task<IList<string>> FindSellerIdsAsync(string keyword)
+        {
+            if (string.IsNullOrEmpty(keyword))
+            {
+                return null;
+            }
+
+            var sellersQuery = ExType<SearchSellersQuery>.New();
+            sellersQuery.Keyword = keyword;
+            var sellers = await _sellersSearchService.SearchAllNoCloneAsync(sellersQuery);
+
+            return sellers.Select(x => x.Id).ToList();
         }
     }
 }
