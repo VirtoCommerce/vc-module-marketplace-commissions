@@ -29,6 +29,16 @@ public class SellerCommissionSearchService : SearchService<SearchSellerCommissio
     {
         var query = ((ICommissionFeeRepository)repository).SellerCommissions;
 
+        if (!string.IsNullOrEmpty(criteria.CommissionFeeId))
+        {
+            query = query.Where(x => x.CommissionFeeId == criteria.CommissionFeeId);
+        }
+
+        if (!criteria.SellerIds.IsNullOrEmpty())
+        {
+            query = query.Where(x => criteria.SellerIds.Contains(x.SellerId));
+        }
+
         return query;
     }
 
