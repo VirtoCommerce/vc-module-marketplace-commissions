@@ -1,14 +1,14 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.MarketplaceCommissionsModule.Core.Services;
+using VirtoCommerce.MarketplaceCommissionsModule.Data.BackgroundJobs;
 using VirtoCommerce.MarketplaceCommissionsModule.Data.Services;
-using VirtoCommerce.MarketplaceVendorModule.Data.BackgroundJobs;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
 
 namespace VirtoCommerce.MarketplaceCommissionsModule.Data.IntegrationEventHandlers
 {
@@ -17,29 +17,32 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.IntegrationEventHandle
         private readonly ICategoryService _categoryService;
         private readonly ICustomerOrderService _customerOrderService;
         private readonly ICommissionFeeEvaluator _commissionFeeEvaluator;
-        private readonly IBackgroundJobExecutor _backgroundJobExecutor;
 
         public CustomerOrderCreatedEventHandler(
             ICategoryService categoryService,
             ICustomerOrderService customerOrderService,
-            ICommissionFeeEvaluator commissionFeeEvaluator,
-            IBackgroundJobExecutor backgroundJobExecutor
+            ICommissionFeeEvaluator commissionFeeEvaluator
             )
         {
             _categoryService = categoryService;
             _customerOrderService = customerOrderService;
             _commissionFeeEvaluator = commissionFeeEvaluator;
-            _backgroundJobExecutor = backgroundJobExecutor;
         }
 
         public virtual Task Handle(OrderChangedEvent message)
         {
             var addedOrders = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(e => e.NewEntry).ToArray();
-            _backgroundJobExecutor.Enqueue(() => HandleOrderChangesInBackground(addedOrders.Select(x => x.Id).ToArray()));
-            return Task.CompletedTask;
+
+            var payload = AbstractTypeFactory<CommissionFeesJobPayload>.TryCreateInstance();
+            payload.OrderIds = addedOrders.Select(x => x.Id).ToArray();
+
+            // The static facade, not an injected IBackgroundJob: RegisterEventHandler resolves this handler once from the
+            // root provider and keeps it for the process lifetime, so it must not capture a scoped dependency.
+            return BackgroundJob.Enqueue<CommissionFeesJobHandler>(payload);
         }
 
-        [DisableConcurrentExecution(10)]
+        // Runs without the per-order lock when called directly; CommissionFeesJobHandler takes it.
+        // Kept public: background jobs enqueued by an earlier version reference this method by name.
         public virtual void HandleOrderChangesInBackground(string[] orderIds)
         {
             foreach (var orderId in orderIds)
