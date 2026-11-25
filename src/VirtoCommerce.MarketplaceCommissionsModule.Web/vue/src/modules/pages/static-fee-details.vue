@@ -78,13 +78,14 @@ import {
   type CommissionFeeDetails,
 } from "../../api_client/virtocommerce.marketplacecommissions";
 import type { StaticFeeVendorsOptions } from "../types";
+import BulkSellerCommissionPopup from "../components/BulkSellerCommissionPopup.vue";
 
 // legacy fee-static-details (and fee-static-add for a new one)
 defineBlade({ url: "/static-commission", name: "MarketplaceCommissionsStaticFeeDetails", permissions: ["operator:resources"] });
 
 const { t } = useI18n({ useScope: "global" });
 const { param, callParent, closeSelf, openBlade, exposeToChildren } = useBlade();
-const { showConfirmation, showError } = usePopup();
+const { showConfirmation, showError, showInfo } = usePopup();
 const { hasAccess } = usePermissions();
 
 const NEW_FEE: CommissionFeeDetails = { type: CommissionFeeType.Static, calculationType: FeeCalculationType.Percent, fee: 0 };
@@ -129,14 +130,16 @@ useBladeWidgets([
     badge: vendorsCount,
     // a new commission has no vendors yet
     isVisible: computed(() => !!param.value),
-    onClick: () => {
-      if (!param.value) return;
-      const options: StaticFeeVendorsOptions = { commissionFeeId: param.value, commissionName: original.value.name };
-      openBlade({ name: "MarketplaceCommissionsStaticFeeVendors", options, onClose: loadVendorsCount });
-    },
+    onClick: openVendors,
     onRefresh: loadVendorsCount,
   },
 ]);
+
+function openVendors() {
+  if (!param.value) return;
+  const options: StaticFeeVendorsOptions = { commissionFeeId: param.value, commissionName: original.value.name };
+  openBlade({ name: "MarketplaceCommissionsStaticFeeVendors", options, onClose: loadVendorsCount });
+}
 
 async function save() {
   loading.value = true;
@@ -187,23 +190,111 @@ const toolbar = computed<IBladeToolbar[]>(() => [
     isVisible: !!param.value,
     permissions: "operator:resources",
     disabled: loading.value || !!original.value.isDefault,
-    async clickHandler() {
-      if (!(await showConfirmation(t("MARKETPLACE_COMMISSIONS.DETAILS.DELETE_CONFIRM", { name: original.value.name ?? "" })))) return;
-      loading.value = true;
-      try {
-        await api.fees.deleteFee([param.value!]);
-        // deleted: drop unsaved changes, otherwise closing the blade asks to save them
-        form.setBaseline();
-        callParent("reload");
-        closeSelf();
-      } catch (e) {
-        showError(String((e as Error).message ?? e));
-      } finally {
-        loading.value = false;
-      }
-    },
+    clickHandler: startDelete,
   },
 ]);
+
+// Deleting a commission with vendors: they are moved to another static commission first, then it's deleted.
+// The backend refuses to delete a static commission that still has vendors, so a partial move keeps it.
+
+const deleteVendorsCount = ref(0);
+
+const { open: openDeletePopup, close: closeDeletePopup } = usePopup(
+  computed(() => ({
+    component: BulkSellerCommissionPopup,
+    props: {
+      commissionFeeId: param.value ?? "",
+      commissionName: original.value.name,
+      count: deleteVendorsCount.value,
+      mode: "delete" as const,
+    },
+    emits: {
+      onClose: () => closeDeletePopup(),
+      onViewVendors: () => {
+        closeDeletePopup();
+        openVendors();
+      },
+      onConfirm: (target: { id: string; name: string }) => {
+        closeDeletePopup();
+        void moveVendorsAndDelete(target);
+      },
+    },
+  })),
+);
+
+async function countVendors(): Promise<number> {
+  const res = await api.fees.searchSellerCommissions({ commissionFeeId: param.value!, take: 0 });
+  return res?.totalCount ?? 0;
+}
+
+async function startDelete() {
+  const name = original.value.name ?? "";
+  loading.value = true;
+  let count: number;
+  try {
+    // not the widget badge: vendors may have been assigned since the blade was opened
+    count = await countVendors();
+  } catch (e) {
+    showError(String((e as Error).message ?? e));
+    return;
+  } finally {
+    loading.value = false;
+  }
+  vendorsCount.value = count;
+
+  if (count > 0) {
+    deleteVendorsCount.value = count;
+    openDeletePopup();
+    return;
+  }
+
+  if (!(await showConfirmation(t("MARKETPLACE_COMMISSIONS.DETAILS.DELETE_CONFIRM", { name })))) return;
+  loading.value = true;
+  try {
+    await deleteAndClose();
+  } catch (e) {
+    showError(String((e as Error).message ?? e));
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function moveVendorsAndDelete(target: { id: string; name: string }) {
+  const name = original.value.name ?? "";
+  loading.value = true;
+  try {
+    const res = await api.fees.bulkUpdateSellerCommissions({
+      commissionFeeId: param.value!,
+      targetCommissionFeeId: target.id,
+      allSellers: true,
+    });
+    const moved = res?.updatedCount ?? 0;
+
+    // vendors assigned or changed by someone else meanwhile are left: keep the commission, as the backend would
+    const remaining = await countVendors();
+    if (remaining > 0) {
+      vendorsCount.value = remaining;
+      await showError(t("MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.NOT_DELETED", { name, moved, to: target.name, remaining }, remaining));
+      return;
+    }
+
+    await deleteAndClose();
+    await showInfo(t("MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.DONE", { name, count: moved, to: target.name }, moved));
+  } catch (e) {
+    showError(String((e as Error).message ?? e));
+    loadVendorsCount();
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function deleteAndClose() {
+  await api.fees.deleteFee([param.value!]);
+  // deleted: drop unsaved changes, otherwise closing the blade asks to save them
+  form.setBaseline();
+  callParent("reload");
+  closeSelf();
+}
 
 onMounted(() => {
   load();

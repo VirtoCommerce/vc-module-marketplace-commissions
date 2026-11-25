@@ -1,12 +1,31 @@
 <template>
-  <!-- picks the static commission to assign the selected vendors to; the blade runs the bulk update on confirm -->
+  <!-- picks the static commission to assign the selected vendors to; the blade runs the bulk update on confirm.
+       In the "delete" mode the vendors are all vendors of a commission being deleted: the blade deletes it after the move -->
   <VcPopup
-    :title="$t('MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.TITLE')"
+    :title="
+      isDelete
+        ? $t('MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.TITLE', { name: commissionName ?? '' })
+        : $t('MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.TITLE')
+    "
     modal-width="tw-max-w-lg"
     @close="$emit('close')"
   >
     <template #content>
       <div class="mc-bulk">
+        <VcBanner
+          v-if="isDelete"
+          variant="warning"
+          icon="lucide-triangle-alert"
+        >
+          {{ $t("MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.BLOCKED", { name: commissionName ?? "", count }, count) }}
+          <VcLink
+            class="mc-bulk__link"
+            @click="$emit('viewVendors')"
+          >
+            {{ $t("MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.VIEW_VENDORS") }}
+          </VcLink>
+        </VcBanner>
+
         <dl class="mc-bulk__summary">
           <dt>{{ $t("MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.FROM") }}</dt>
           <dd>{{ commissionName }}</dd>
@@ -39,6 +58,20 @@
           {{ $t("MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.NO_TARGETS") }}
         </p>
 
+        <!-- the summary of the change, once the target is known -->
+        <p
+          v-if="isDelete && target"
+          class="mc-bulk__outcome"
+        >
+          {{
+            $t(
+              "MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.SUMMARY",
+              { count, from: commissionName ?? "", to: target.name },
+              count,
+            )
+          }}
+        </p>
+
         <VcBanner
           variant="info"
           icon="lucide-info"
@@ -61,9 +94,11 @@
           @click="confirm"
         >
           {{
-            target
-              ? $t("MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.CONFIRM", { count, name: target.name }, count)
-              : $t("MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.CONFIRM_DISABLED")
+            !target
+              ? $t("MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.CONFIRM_DISABLED")
+              : isDelete
+                ? $t("MARKETPLACE_COMMISSIONS.DELETE_WITH_VENDORS.CONFIRM", { count, name: commissionName ?? "" }, count)
+                : $t("MARKETPLACE_COMMISSIONS.BULK_SELLER_COMMISSION.CONFIRM", { count, name: target.name }, count)
           }}
         </VcButton>
       </div>
@@ -73,7 +108,7 @@
 
 <script setup lang="ts">
 import { usePopup } from "@vc-shell/framework";
-import { VcBanner, VcButton, VcLoading, VcPopup, VcRadioGroup } from "@vc-shell/framework/ui";
+import { VcBanner, VcButton, VcLink, VcLoading, VcPopup, VcRadioGroup } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { api } from "../api";
@@ -87,13 +122,17 @@ const props = defineProps<{
   count: number;
   /** the vendor name filter of a "select all" selection */
   keyword?: string;
+  /** "delete": all vendors of the commission are moved before it's deleted; the default commission is preselected */
+  mode?: "move" | "delete";
 }>();
-const emit = defineEmits<{ close: []; confirm: [target: { id: string; name: string }] }>();
+const emit = defineEmits<{ close: []; confirm: [target: { id: string; name: string }]; viewVendors: [] }>();
 
 const { t } = useI18n({ useScope: "global" });
 const { showError } = usePopup();
 
-type Target = { id: string; name: string; label: string };
+const isDelete = computed(() => props.mode === "delete");
+
+type Target = { id: string; name: string; label: string; isDefault: boolean };
 
 // static commissions are few: all of them, the default one first
 const targets = ref<Target[]>([]);
@@ -109,8 +148,12 @@ onMounted(async () => {
           x.calculationType === FeeCalculationType.Percent ? `${x.fee}%` : `${x.fee} ${t("MARKETPLACE_COMMISSIONS.CALCULATION_TYPES.Fixed")}`;
         const name = x.name ?? x.id!;
         const label = `${name} (${fee})${x.isDefault ? ` · ${t("MARKETPLACE_COMMISSIONS.STATIC_LIST.DEFAULT")}` : ""}`;
-        return { id: x.id!, name, label };
+        return { id: x.id!, name, label, isDefault: !!x.isDefault };
       });
+    // the default commission is the one new vendors get: offer it first
+    if (isDelete.value) {
+      targetId.value = targets.value.find((x) => x.isDefault)?.id;
+    }
   } catch (e) {
     showError(String((e as Error).message ?? e));
   } finally {
@@ -147,6 +190,15 @@ function confirm() {
 .mc-bulk__summary dd {
   margin: 0;
   min-width: 0;
+}
+
+.mc-bulk__link {
+  margin-left: 4px;
+}
+
+.mc-bulk__outcome {
+  margin: 0;
+  font-weight: 500;
 }
 
 .mc-bulk__empty {

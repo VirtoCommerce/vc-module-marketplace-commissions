@@ -131,6 +131,15 @@
       "CONFIRM_DISABLED": "Select a commission",
       "SUCCESS": "{count} vendor moved to {name} | {count} vendors moved to {name}",
       "PARTIAL": "{updated} of {count} vendors moved to {name}. The others were changed by another user: refresh the list to see them."
+    },
+    "DELETE_WITH_VENDORS": {
+      "TITLE": "Delete commission \"{name}\"",
+      "BLOCKED": "\"{name}\" can't be deleted while {count} vendor is assigned to it. Move the vendor to another static commission first. | \"{name}\" can't be deleted while {count} vendors are assigned to it. Move them to another static commission first.",
+      "VIEW_VENDORS": "View vendors",
+      "SUMMARY": "{count} vendor will move from \"{from}\" to \"{to}\", then \"{from}\" will be deleted. | {count} vendors will move from \"{from}\" to \"{to}\", then \"{from}\" will be deleted.",
+      "CONFIRM": "Move {count} vendor and delete | Move {count} vendors and delete",
+      "DONE": "Commission \"{name}\" was deleted. {count} vendor was moved to \"{to}\". | Commission \"{name}\" was deleted. {count} vendors were moved to \"{to}\".",
+      "NOT_DELETED": "Commission \"{name}\" was not deleted. {moved} moved to \"{to}\", but {remaining} vendor is still assigned to it: it was assigned or changed by another user meanwhile. Delete the commission again to move it. | Commission \"{name}\" was not deleted. {moved} moved to \"{to}\", but {remaining} vendors are still assigned to it: they were assigned or changed by another user meanwhile. Delete the commission again to move them."
     }
   }
 }
