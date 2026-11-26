@@ -77,16 +77,19 @@
       "ADD_CONDITION": "Add condition",
       "REMOVE": "Remove",
       "VENDOR_IS": "Vendor is",
+      "USER_GROUP_IS": "User group",
       "CATEGORY_IS": "Category is",
       "PRODUCT_IS": "Product is",
       "EXCLUDING": "excluding",
       "EXCLUDE_CATEGORIES": "Excluded categories",
       "EXCLUDE_PRODUCTS": "Excluded products",
       "SELECT_VENDORS": "Select vendors",
+      "SELECT_USER_GROUP": "Select user group",
       "SELECT_CATEGORY": "Select category",
       "SELECT_PRODUCTS": "Select products",
       "NAMES": {
         "VcmpConditionVendorIs": "Vendor is ...",
+        "UserGroupsContainsCondition": "User group ...",
         "VcmpConditionCategoryIs": "Category is ...",
         "VcmpConditionProductIs": "Product is ..."
       }

@@ -62,7 +62,18 @@
           />
         </template>
 
-        <!-- a node without an editor (e.g. UserGroupsContainsCondition): shown by its id, can only be removed -->
+        <template v-else-if="node.id === 'UserGroupsContainsCondition'">
+          <span class="mc-cond__text">{{ $t("MARKETPLACE_COMMISSIONS.CONDITIONS.USER_GROUP_IS") }}</span>
+          <IdsSelect
+            :model-value="node.group ? [String(node.group)] : []"
+            @update:model-value="(v: string[]) => (node.group = v[0] ?? null)"
+            :search="searchUserGroups"
+            :placeholder="$t('MARKETPLACE_COMMISSIONS.CONDITIONS.SELECT_USER_GROUP')"
+            :disabled="disabled"
+          />
+        </template>
+
+        <!-- a node without an editor: shown by its id, can only be removed -->
         <span
           v-else
           class="mc-cond__text"
@@ -147,7 +158,7 @@ import { VcButton, VcDropdown, VcSelect } from "@vc-shell/framework/ui";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import IdsSelect from "./IdsSelect.vue";
-import { searchCategories, searchProducts, searchVendors } from "../lookups";
+import { searchCategories, searchProducts, searchUserGroups, searchVendors } from "../lookups";
 
 // A node of the commission expression tree, edited in place on the API object (legacy va-dynamic-expression-tree with
 // the templates of Scripts/dynamicConditions/templates.html)
@@ -178,8 +189,8 @@ const allAny = computed(() => [
   { value: "false", label: t("MARKETPLACE_COMMISSIONS.CONDITIONS.ANY") },
 ]);
 
-// the conditions this editor knows; the server may offer others (UserGroupsContainsCondition) the legacy UI had no editor for
-const EDITABLE = ["VcmpConditionVendorIs", "VcmpConditionCategoryIs", "VcmpConditionProductIs"];
+// the conditions this editor knows; others the server may offer are left out of the "Add condition" menu
+const EDITABLE = ["VcmpConditionVendorIs", "UserGroupsContainsCondition", "VcmpConditionCategoryIs", "VcmpConditionProductIs"];
 
 // the "Add condition" menu lists the prototypes the API sends with the block (availableChildren)
 const addable = computed<AddItem[]>(() =>
