@@ -80,6 +80,30 @@ export async function searchVendors(keyword?: string, skip = 0, ids?: string[]):
   return { results: (r.results ?? []).map((x) => ({ id: x.id, name: x.name || x.id })), totalCount: r.totalCount ?? 0 };
 }
 
+// The groups a vendor (its organization) can be in: the Customer module's "Customer.MemberGroups" dictionary, as in the
+// legacy UserGroupsContainsCondition editor; loaded once, retried after a failure
+let memberGroups: Promise<string[]> | undefined;
+function userGroups() {
+  memberGroups ??= http<unknown[]>("/api/platform/settings/values/Customer.MemberGroups")
+    .then((values) => (values ?? []).map((x) => String((x as { value?: unknown })?.value ?? x)).filter(Boolean))
+    .catch(() => {
+      memberGroups = undefined;
+      return [];
+    });
+  return memberGroups;
+}
+
+export async function searchUserGroups(keyword?: string, skip = 0, ids?: string[]): Promise<Page> {
+  // a saved group is shown as is, even if it was removed from the dictionary since
+  if (ids?.length && !keyword) return { results: ids.map((id) => ({ id, name: id })), totalCount: ids.length };
+  const term = keyword?.trim().toLowerCase();
+  const matching = (await userGroups()).filter((x) => !term || x.toLowerCase().includes(term));
+  return {
+    results: matching.slice(skip, skip + PAGE).map((id) => ({ id, name: id })),
+    totalCount: matching.length,
+  };
+}
+
 export interface OrderLineItem {
   id?: string;
   name?: string;

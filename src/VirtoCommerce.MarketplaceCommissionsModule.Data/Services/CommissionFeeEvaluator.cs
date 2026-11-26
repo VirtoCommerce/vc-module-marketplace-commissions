@@ -56,7 +56,13 @@ namespace VirtoCommerce.MarketplaceCommissionsModule.Data.Services
                     resultEntry.CommissionFee = sellerCommissionsMap[resultEntry.SellerId];
                 }
 
-                var verifiableConditions = new CommissionFeeEvaluationContext { AllEntries = context.AllEntries, Entry = resultEntry };
+                var verifiableConditions = new CommissionFeeEvaluationContext
+                {
+                    AllEntries = context.AllEntries,
+                    Entry = resultEntry,
+                    // for UserGroupsContainsCondition ("Vendor matching ... user group contains"): the vendor's groups
+                    UserGroups = seller?.Groups?.ToArray() ?? [],
+                };
 
                 var matchedDynCommissionFee = dynamicCommissionFees.OrderByDescending(x => x.Priority)
                                                              .FirstOrDefault(x => x.ExpressionTree.IsSatisfiedBy(verifiableConditions));
